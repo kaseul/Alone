@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "923764154933",
+    "firebase_url": "https://alone-5017d.firebaseio.com",
+    "project_id": "alone-5017d",
+    "storage_bucket": "alone-5017d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923764154933:android:6a9b7918643e77a8",
+        "android_client_info": {
+          "package_name": "alone.klp.kr.hs.mirim.alone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923764154933-jc4qb3lgq4o1qv4rhseagupfde25mmgp.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "alone.klp.kr.hs.mirim.alone",
+            "certificate_hash": "784da96773a65390d6c15626ae2ca526dcff31eb"
+          }
+        },
+        {
+          "client_id": "923764154933-3m0tvck23sdcpapd5f0k67u3j98nfp4c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7hQo6iCXPnParzla0U-983weQbYJ3biQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923764154933-3m0tvck23sdcpapd5f0k67u3j98nfp4c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
