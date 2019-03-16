@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Alone</string>
+    <string name="hint_search">#해시태그 검색</string>
 </resources>
