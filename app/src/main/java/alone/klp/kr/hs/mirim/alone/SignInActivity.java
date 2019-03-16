@@ -21,9 +21,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
-    private static final String TAG = SignInActivity.class.getSimpleName();
+import alone.klp.kr.hs.mirim.alone.model.varStructure;
 
+public class SignInActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, View.OnClickListener {
+    public static varStructure var = new varStructure();
+
+    private static final String TAG = SignInActivity.class.getSimpleName();
     private static final int RC_SIGN_IN = 1000;
 
     // Firebase 인스턴스 변수
@@ -85,21 +88,21 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         mFirebaseAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // 인증에 성공하면 MainActivity 로 이동, 실패하면 에러 메시지 표시
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "인증실패", task.getException());
-                            Toast.makeText(SignInActivity.this, "인증실패",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            //var.UserID = FirebaseAuth.getInstance().getUid();
-                            startActivity(new Intent(SignInActivity.this, MainActivity.class));
-                            finish();
-                        }//else
-                    }//onComplete
-                });//mFirebaseAuth
-        }//firebaseAuthWithGoogle
+            .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    // 인증에 성공하면 MainActivity 로 이동, 실패하면 에러 메시지 표시
+                    if (!task.isSuccessful()) {
+                        Log.w(TAG, "인증실패", task.getException());
+                        Toast.makeText(SignInActivity.this, "인증실패",
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        var.UserID = FirebaseAuth.getInstance().getUid();
+                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                        finish();
+                    }//else
+            }//onComplete
+        });//mFirebaseAuth
+    }//firebaseAuthWithGoogle
 
 }

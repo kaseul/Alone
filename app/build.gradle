@@ -36,6 +36,9 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.firebase:firebase-firestore:18.1.0'
+    implementation 'com.google.firebase:firebase-config:16.4.0'
+    implementation 'com.google.firebase:firebase-invites:16.1.1'
+    implementation 'com.google.firebase:firebase-crash:16.2.1'
 
     // third party libs
     implementation 'de.hdodenhof:circleimageview:2.1.0'

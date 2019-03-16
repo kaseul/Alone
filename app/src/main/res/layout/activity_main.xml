@@ -18,6 +18,8 @@
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
         android:hint="@string/hint_search"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textSize="5.5pt"
         android:background="@drawable/search_background"
         />

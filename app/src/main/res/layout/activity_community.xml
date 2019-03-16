@@ -17,13 +17,16 @@
         android:layout_alignParentBottom="true"
         />
 
+    <!--칸 나누어주는거-->
     <ListView
         android:id="@+id/listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
         android:scrollbars="none"
-    /><!--칸 나누어주는거-->
+        android:dividerHeight="7dp"
+        android:divider="#00000000"
+    />
 
 
 </RelativeLayout>
