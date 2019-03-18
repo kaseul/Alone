@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Alone</string>
+<<<<<<< HEAD
     <string name="nav_menu_1">테스트</string>
     <string name="nav_menu_2">테스트</string>
     <string name="nav_menu_3">테스트</string>
@@ -9,4 +10,7 @@
     <string name="nav_sub_menu_item02">Sub Menu Item 2</string>
     <string name="action_settings">흠</string>
 
+=======
+    <string name="hint_search">#해시태그 검색</string>
+>>>>>>> 816ccfd7cc68959e3c3d275afb7615bff58ff86f
 </resources>

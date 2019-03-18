@@ -31,11 +31,16 @@ dependencies {
     implementation 'com.android.support:support-media-compat:27.1.1'
     implementation 'com.android.support:support-v4:27.1.1'
 
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+
     // Firebase
-    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.firebase:firebase-auth:16.2.0'
     implementation 'com.google.firebase:firebase-database:16.1.0'
     implementation 'com.google.firebase:firebase-storage:16.1.0'
     implementation 'com.google.firebase:firebase-firestore:18.1.0'
+    implementation 'com.google.firebase:firebase-config:16.4.0'
+    implementation 'com.google.firebase:firebase-invites:16.1.1'
+    implementation 'com.google.firebase:firebase-crash:16.2.1'
 
     // third party libs
     implementation 'de.hdodenhof:circleimageview:2.1.0'
@@ -48,10 +53,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+<<<<<<< HEAD
     //내가 설정하면서 추가한 것들
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:multidex:1.0.3'
     compile 'com.android.support:design:27.0.0'
+=======
+    implementation 'com.android.support:multidex:1.0.3'
+>>>>>>> 816ccfd7cc68959e3c3d275afb7615bff58ff86f
 }
 
 apply plugin: 'com.google.gms.google-services'

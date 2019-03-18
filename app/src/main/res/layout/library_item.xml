@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:layout_marginTop="7dp"
+    android:background="@drawable/shadow"
+    >
+
+    <Button
+        android:id="@+id/btn_favorite"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
+        android:background="@drawable/unfavorite"
+        android:layout_margin="6dp"
+        />
+    
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="270dp"
+        android:layout_height="wrap_content"
+        android:text="title"
+        android:textSize="15sp"
+        android:textColor="@color/colorText"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/btn_favorite"
+        />
+
+    <TextView
+        android:id="@+id/length"
+        android:layout_width="25dp"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:textColor="@color/colorText"
+        android:textSize="4.5pt"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/btn_favorite"
+        android:layout_below="@+id/title"
+        />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        android:layout_width="230dp"
+        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_marginStart="6dp"
+        android:layout_below="@+id/title"
+        android:layout_toEndOf="@+id/length"
+        />
+
+    <Button
+        android:id="@+id/btn_play"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@drawable/btn_play"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_toEndOf="@+id/title"
+        />
+
+</RelativeLayout>
