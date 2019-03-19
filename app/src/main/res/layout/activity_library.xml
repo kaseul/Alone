@@ -14,7 +14,7 @@
         android:layout_height="30dp"
         android:text="전체"
         android:textColor="@color/colorUnderline"
-        android:background="@drawable/selector_library"
+        android:background="@drawable/btn_underline"
         android:layout_marginStart="20dp"
         style="?android:attr/borderlessButtonStyle"
         />
@@ -25,7 +25,7 @@
         android:layout_height="30dp"
         android:text="즐겨찾기"
         android:textColor="@color/colorUnderline"
-        android:background="@drawable/selector_library"
+        android:background="@drawable/btn_none"
         android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/btn_lib_all"
         style="?android:attr/borderlessButtonStyle"

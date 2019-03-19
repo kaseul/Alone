@@ -32,8 +32,9 @@ import java.util.Map;
 import alone.klp.kr.hs.mirim.alone.adapter.CommunityAdapter;
 import alone.klp.kr.hs.mirim.alone.model.Member;
 
-public class CommunityActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
+public class CommunityActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     // Firebase 인스턴스 변수
@@ -45,14 +46,14 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
     private DatabaseReference mReference;
     private ChildEventListener mChild;
 
-    ArrayList<Member> items = new ArrayList<>();//멤버
-    ArrayList<Member> searchList = new ArrayList<>();
-
     // 구글
     private GoogleApiClient mGoogleApiClient;
 
+    public static ArrayList<Member> items = new ArrayList<>();//멤버
+    public static ArrayList<Member> searchlist = new ArrayList<>();
+    public static CommunityAdapter communityAdapter;
     private ListView listView;
-    private CommunityAdapter adapter;
+
     Button btn_add;
     EditText editSearch;
 
@@ -127,8 +128,9 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
     protected void onResume() {
         super.onResume();
         items.clear();
-        searchList.clear();
+        searchlist.clear();
         getDatabase();
+        var.isLibrary = false;
     }
 
     //함수 getDatabase()
@@ -165,10 +167,10 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
 
     private void  createMemberList(Member member){
         items.add(member);
-        searchList.add(member);
+        searchlist.add(member);
         Log.d("값 확인", member.getText() + " " + items.size());
-        adapter = new CommunityAdapter(items);
-        listView.setAdapter(adapter);
+        communityAdapter = new CommunityAdapter(items);
+        listView.setAdapter(communityAdapter);
     }//createMemberList
 
 }

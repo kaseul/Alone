@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/btn_add"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
         android:background="@drawable/btn_add"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
