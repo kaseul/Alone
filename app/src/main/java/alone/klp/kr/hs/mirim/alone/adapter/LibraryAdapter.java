@@ -35,7 +35,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     LibraryItem item;
 
     MediaPlayer music;
-    int pos = 0;
+    int pos = -1;
     boolean isALL = true;
 
     public LibraryAdapter(List<LibraryItem> list, Context context) {
@@ -100,7 +100,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                                 }
                             });
                 }
-                else if(list.get(position).index == -1) {
+                else if(!list.get(position).ifFav) {
                     Map<String, Object> fav = new HashMap<>();
                     fav.put("title", list.get(position).title);
 
@@ -138,12 +138,33 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         holder.btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(pos != position && music != null) {
+                Log.e("list_", pos + "" + var.isAll);
+//                if(isALL != var.isAll) {
+//                    if(var.isAll) {
+//                        pos = favList.get(pos).index;
+//                        Log.e("list_pos", pos + "" + var.isAll);
+//                    } else {
+//                        if(LibraryActivity.list.get(pos).ifFav) {
+//                            pos = LibraryActivity.list.get(pos).index;
+//                        }
+//                    }
+//                    isALL = var.isAll;
+//                    notifyDataSetChanged();
+//                }
+
+                Log.e("list", pos + "");
+                if(music != null && ((isALL == var.isAll && pos != position) || isALL != var.isAll)) {
                     music.stop();
                     music.release();
                     music = null;
 
-                    list.get(pos).isPlay = false;
+                    if(!isALL) {
+                        pos = favList.get(pos).index;
+                    }
+                    LibraryActivity.list.get(pos).isPlay = false;
+                    isALL = var.isAll;
+
+//                        list.get(pos).isPlay = false;
                 }
 
                 if(music == null) {

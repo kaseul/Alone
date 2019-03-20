@@ -131,7 +131,7 @@ public class LibraryActivity extends AppCompatActivity {
                                         libraryitem = item;
                                         libraryitem.ifFav = true;
                                         libraryitem.index = favList.size();
-                                        Log.d("리스트", favList.size() + "");
+                                        Log.d("리스트", libraryitem.index + "" + libraryitem.title + count);
                                         list.set(count, libraryitem);
                                         libraryitem.index = count;
                                         favList.add(libraryitem);

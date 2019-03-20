@@ -53,14 +53,12 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
-<<<<<<< HEAD
     //내가 설정하면서 추가한 것들
-    implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    implementation fileTree(include: ['*.jar'], dir: 'libs')
+//    implementation 'com.android.support:multidex:1.0.3'
+//    compile 'com.android.support:design:27.0.0'
+
     implementation 'com.android.support:multidex:1.0.3'
-    compile 'com.android.support:design:27.0.0'
-=======
-    implementation 'com.android.support:multidex:1.0.3'
->>>>>>> 816ccfd7cc68959e3c3d275afb7615bff58ff86f
 }
 
 apply plugin: 'com.google.gms.google-services'
