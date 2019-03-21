@@ -5,13 +5,11 @@ public class LibraryItem {
     public String content;
     public String length;
     public String url;
-    public int index = -1;
     public boolean ifFav = false;
     public boolean isPlay = false;
 
     @Override
     public boolean equals(Object obj) {
-        //return super.equals(obj);
         if (this == obj) return true;
         if (obj == null) return false;
         if (getClass() != obj.getClass())

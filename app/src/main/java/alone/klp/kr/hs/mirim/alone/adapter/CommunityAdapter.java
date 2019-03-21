@@ -47,6 +47,7 @@ public class CommunityAdapter extends BaseAdapter {
     public void setCommunityAdapter(ArrayList<Member> items) {
         this.items = items;
         Collections.reverse(items);//최근 작성 글부터 나타나게 해줌
+        notifyDataSetChanged();
     }
 
     public String calculateTime(Date date) {

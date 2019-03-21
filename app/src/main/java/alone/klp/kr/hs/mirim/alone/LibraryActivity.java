@@ -32,9 +32,8 @@ public class LibraryActivity extends AppCompatActivity {
     LibraryItem item;
 
     public static LibraryAdapter adapter;
-    public static ArrayList<LibraryItem> list;
-    public static ArrayList<LibraryItem> searchList;
-    public static ArrayList<LibraryItem> favList;
+    private ArrayList<LibraryItem> list;
+    private ArrayList<LibraryItem> searchList;
     private RecyclerView libraryListRecyclerView;
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -50,9 +49,8 @@ public class LibraryActivity extends AppCompatActivity {
 
         libraryListRecyclerView = findViewById(R.id.library_recyclerview);
 
-        list = new ArrayList<LibraryItem>();
-        searchList = new ArrayList<LibraryItem>();
-        favList = new ArrayList<LibraryItem>();
+        list = (ArrayList<LibraryItem>) getIntent().getSerializableExtra("library_list");
+        searchList = (ArrayList<LibraryItem>) getIntent().getSerializableExtra("library_search");
 
         btn_lib_all = findViewById(R.id.btn_lib_all);
         btn_lib_want = findViewById(R.id.btn_lib_want);
@@ -87,7 +85,7 @@ public class LibraryActivity extends AppCompatActivity {
                 View view = findViewById(R.id.btn_lib_want);
                 view.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.btn_none));
                 var.isAll = true;
-                adapter.setLibraryAdapter(list);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -98,7 +96,7 @@ public class LibraryActivity extends AppCompatActivity {
                 View view = findViewById(R.id.btn_lib_all);
                 view.setBackground(getApplicationContext().getResources().getDrawable(R.drawable.btn_none));
                 var.isAll = false;
-                adapter.setLibraryAdapter(favList);
+                adapter.notifyDataSetChanged();
             }
         });
 
@@ -130,11 +128,7 @@ public class LibraryActivity extends AppCompatActivity {
                                     if(item.title.equals(document.get("title"))) {
                                         libraryitem = item;
                                         libraryitem.ifFav = true;
-                                        libraryitem.index = favList.size();
-                                        Log.d("리스트", libraryitem.index + "" + libraryitem.title + count);
                                         list.set(count, libraryitem);
-                                        libraryitem.index = count;
-                                        favList.add(libraryitem);
                                         Log.d("즐겨찾기가 되어있는지", String.valueOf(libraryitem.ifFav) + count);
                                         break;
                                     }

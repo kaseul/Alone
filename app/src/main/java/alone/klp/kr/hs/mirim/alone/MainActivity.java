@@ -2,6 +2,7 @@ package alone.klp.kr.hs.mirim.alone;
 
 import android.app.Activity;
 import android.app.TabActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,36 +10,65 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TabHost;
 import android.widget.TextView;
 
-import alone.klp.kr.hs.mirim.alone.adapter.CommunityAdapter;
+import java.util.ArrayList;
 
-import static alone.klp.kr.hs.mirim.alone.CommunityActivity.items;
-import static alone.klp.kr.hs.mirim.alone.CommunityActivity.searchlist;
+import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
+import alone.klp.kr.hs.mirim.alone.model.Member;
+
 import static alone.klp.kr.hs.mirim.alone.CommunityActivity.communityAdapter;
 import static alone.klp.kr.hs.mirim.alone.LibraryActivity.adapter;
-import static alone.klp.kr.hs.mirim.alone.LibraryActivity.list;
-import static alone.klp.kr.hs.mirim.alone.LibraryActivity.searchList;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class MainActivity extends TabActivity {
 
     private EditText editSearch;
+    private Button btn_search;
+    private ArrayList<LibraryItem> lib_list;
+    private ArrayList<Member> com_items;
+    private ArrayList<LibraryItem> lib_search;
+    private ArrayList<Member> com_search;
+
+    InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+
+        lib_list = new ArrayList<LibraryItem>();
+        com_items = new ArrayList<Member>();
+        lib_search = new ArrayList<>();
+        com_search = new ArrayList<>();
         editSearch = findViewById(R.id.edit_search);
+        btn_search = findViewById(R.id.btn_search);
+
+        btn_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+            }
+        });
 
         final TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
         tabHost.getTabWidget().setDividerDrawable(null);
 
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("LIBRARY").setContent(new Intent(this, LibraryActivity.class)));
-        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("COMMUNITY").setContent(new Intent(this, CommunityActivity.class)));
+        Intent library_intent = new Intent(this, LibraryActivity.class);
+        library_intent.putExtra("library_list", lib_list);
+        library_intent.putExtra("library_search", lib_search);
+
+        Intent community_intent = new Intent(this, CommunityActivity.class);
+        community_intent.putExtra("community_list", com_items);
+        community_intent.putExtra("community_search", com_search);
+
+        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("LIBRARY").setContent(library_intent));
+        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("COMMUNITY").setContent(community_intent));
 
         TextView tabTitle = (TextView) tabHost.getTabWidget().getChildAt(0).findViewById(android.R.id.title);
         tabTitle.setTextColor(getResources().getColor(R.color.colorTabSelected));
@@ -95,26 +125,31 @@ public class MainActivity extends TabActivity {
 
     }
 
+    public static int dpToPx(Context context, int dpValue) {
+        float density = context.getResources().getDisplayMetrics().density;
+        return Math.round((float)dpValue * density);
+    }
+
     // 검색을 수행하는 메소드
     public void search(String charText) {
         if(var.isLibrary) {
             // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
-            list.clear();
+            lib_list.clear();
 
             // 문자 입력이 없을때는 모든 데이터를 보여준다.
             if (charText.length() == 0) {
-                list.addAll(searchList);
+                lib_list.addAll(lib_search);
             }
             // 문자 입력을 할때..
             else {
                 // 리스트의 모든 데이터를 검색한다.
-                for (int i = 0; i < searchList.size(); i++) {
+                for (int i = 0; i < lib_search.size(); i++) {
                     // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
-                    if (searchList.get(i).content.toLowerCase().contains(charText.toLowerCase()) || matchString(searchList.get(i).content, charText)) {
+                    if (lib_search.get(i).content.toLowerCase().contains(charText.toLowerCase()) || matchString(lib_search.get(i).content, charText)) {
                         // 검색된 데이터를 리스트에 추가한다.
-                        list.add(searchList.get(i));
-                    } else if (searchList.get(i).title.toLowerCase().contains(charText.toLowerCase()) || matchString(searchList.get(i).title, charText)) {
-                        list.add(searchList.get(i));
+                        lib_list.add(lib_search.get(i));
+                    } else if (lib_search.get(i).title.toLowerCase().contains(charText.toLowerCase()) || matchString(lib_search.get(i).title, charText)) {
+                        lib_list.add(lib_search.get(i));
                     }
                 }
             }
@@ -122,28 +157,28 @@ public class MainActivity extends TabActivity {
             adapter.notifyDataSetChanged();
         } else {
             // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
-            items.clear();
+            com_items.clear();
 
             // 문자 입력이 없을때는 모든 데이터를 보여준다.
             if (charText.length() == 0) {
-                items.addAll(searchlist);
+                com_items.addAll(com_search);
             }
             // 문자 입력을 할때..
             else
             {
                 // 리스트의 모든 데이터를 검색한다.
-                for(int i = 0;i < searchlist.size(); i++)
+                for(int i = 0; i < com_search.size(); i++)
                 {
                     // arraylist의 모든 데이터에 입력받은 단어(charText)가 포함되어 있으면 true를 반환한다.
-                    if (searchlist.get(i).getText().toLowerCase().contains(charText.toLowerCase()) || matchString(searchlist.get(i).getText(),charText))
+                    if (com_search.get(i).getText().toLowerCase().contains(charText.toLowerCase()) || matchString(com_search.get(i).getText(),charText))
                     {
                         // 검색된 데이터를 리스트에 추가한다.
-                        items.add(searchlist.get(i));
+                        com_items.add(com_search.get(i));
                     }
                 }
             }
             // 리스트 데이터가 변경되었으므로 아답터를 갱신하여 검색된 데이터를 화면에 보여준다.
-            communityAdapter.notifyDataSetChanged();
+            communityAdapter.setCommunityAdapter(com_items);
         }
     }
 

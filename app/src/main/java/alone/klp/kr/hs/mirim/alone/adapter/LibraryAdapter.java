@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -21,18 +22,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import alone.klp.kr.hs.mirim.alone.LibraryActivity;
+import alone.klp.kr.hs.mirim.alone.MainActivity;
 import alone.klp.kr.hs.mirim.alone.R;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 
-import static alone.klp.kr.hs.mirim.alone.LibraryActivity.favList;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 
     private Context context;
     List<LibraryItem> list;
-    LibraryItem item;
 
     MediaPlayer music;
     int pos = -1;
@@ -51,123 +50,96 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull final LibraryAdapter.ViewHolder holder, final int position) {
-        holder.title.setText(list.get(position).title);
-        //holder.content.setText(list.get(position).content);
-        holder.length.setText(list.get(position).length);
+        RelativeLayout.LayoutParams params;
 
-        holder.btnFav.setBackground(context.getResources().getDrawable(R.drawable.unfavorite));
-        if(list.get(position).ifFav) {
-            Log.d("즐겨찾기 확인", String.valueOf(list.get(position).ifFav));
-            holder.btnFav.setBackground(context.getResources().getDrawable(R.drawable.favorite));
-        }
+        if(!var.isAll && !list.get(position).ifFav) {
+            holder.layout.setVisibility(View.GONE);
+            params = (RelativeLayout.LayoutParams) holder.layout.getLayoutParams();
+            params.height = 0;
+            holder.layout.setLayoutParams(params);
+        } else {
+            holder.layout.setVisibility(View.VISIBLE);
+            params = (RelativeLayout.LayoutParams) holder.layout.getLayoutParams();
+            params.height = MainActivity.dpToPx(context, 70);
+            params.topMargin = MainActivity.dpToPx(context, 7);
+            holder.layout.setLayoutParams(params);
 
-        holder.btnFav.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseFirestore db = FirebaseFirestore.getInstance();
-                Log.d("list", list.size() + " " + position + var.isAll);
+            holder.title.setText(list.get(position).title);
+            //holder.content.setText(list.get(position).content);
+            holder.length.setText(list.get(position).length);
 
-                if(list.size() > 0 && list.get(position).ifFav) {
-                    db.collection("Users").document(var.UserID).collection("Favorite").document(list.get(position).title)
-                            .delete()
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
-                                    Log.d("즐겨찾기 삭제 성공", "DocumentSnapshot successfully deleted!");
-                                    if(var.isAll) {
-//                                        Log.d("리스트", list.get(position).index + "");
-                                        item = list.get(position);
-                                        favList.remove(item);
+            holder.btnFav.setBackground(context.getResources().getDrawable(R.drawable.unfavorite));
+            if (list.get(position).ifFav) {
+                Log.d("즐겨찾기 확인", String.valueOf(list.get(position).ifFav));
+                holder.btnFav.setBackground(context.getResources().getDrawable(R.drawable.favorite));
+            }
+
+            holder.btnFav.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                    Log.d("list", list.size() + " " + position + var.isAll);
+
+                    if (list.get(position).ifFav) {
+                        db.collection("Users").document(var.UserID).collection("Favorite").document(list.get(position).title)
+                                .delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Log.d("즐겨찾기 삭제 성공", "DocumentSnapshot successfully deleted!");
                                         list.get(position).ifFav = false;
-                                        list.get(position).index = -1;
                                         holder.btnFav.setBackground(context.getResources().getDrawable(R.drawable.unfavorite));
                                         notifyDataSetChanged();
-                                    } else {
-                                        LibraryActivity.list.get(list.get(position).index).ifFav = false;
-//                                        Log.d("리스트_size", list.size() + " " + position + var.isAll);
-//                                        Log.d("리스트", favList.get(position).index + " " + LibraryActivity.list.get(list.get(position).index).ifFav);
-                                        LibraryActivity.list.get(list.get(position).index).index = -1;
-                                        list.remove(position);
-
-                                        notifyDataSetChanged();
                                     }
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w("즐겨찾기 삭제 실패", "Error deleting document", e);
-                                }
-                            });
-                }
-                else if(!list.get(position).ifFav) {
-                    Map<String, Object> fav = new HashMap<>();
-                    fav.put("title", list.get(position).title);
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("즐겨찾기 삭제 실패", "Error deleting document", e);
+                                    }
+                                });
+                    } else {
+                        Map<String, Object> fav = new HashMap<>();
+                        fav.put("title", list.get(position).title);
 
-                    db.collection("Users").document(var.UserID).collection("Favorite").document(list.get(position).title)
-                            .set(fav)
-                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void aVoid) {
+                        db.collection("Users").document(var.UserID).collection("Favorite").document(list.get(position).title)
+                                .set(fav)
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
 //                                    Log.d("즐겨찾기 추가 성공", "DocumentSnapshot successfully written!");
                                     list.get(position).ifFav = true;
-                                    list.get(position).index = favList.size();
-                                    item = list.get(position);
-                                    item.index = position;
-                                    favList.add(item);
                                     holder.btnFav.setBackground(context.getResources().getDrawable(R.drawable.favorite));
-                                }
-                            })
-                            .addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    Log.w("즐겨찾기 추가 실패", "Error writing document", e);
-                                }
-                            });
-
-                    notifyDataSetChanged();
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.w("즐겨찾기 추가 실패", "Error writing document", e);
+                                    }
+                                });
+                        notifyDataSetChanged();
+                    }
                 }
-            }
-        });
+            });
 
-        holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_play));
-        if(list.get(position).isPlay) {
-            holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_pause));
-        }
+            holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_play));
+            if (list.get(position).isPlay)
+                holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_pause));
 
-        holder.btnPlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("list_", pos + "" + var.isAll);
-//                if(isALL != var.isAll) {
-//                    if(var.isAll) {
-//                        pos = favList.get(pos).index;
-//                        Log.e("list_pos", pos + "" + var.isAll);
-//                    } else {
-//                        if(LibraryActivity.list.get(pos).ifFav) {
-//                            pos = LibraryActivity.list.get(pos).index;
-//                        }
-//                    }
-//                    isALL = var.isAll;
-//                    notifyDataSetChanged();
-//                }
-
+            holder.btnPlay.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
                 Log.e("list", pos + "");
-                if(music != null && ((isALL == var.isAll && pos != position) || isALL != var.isAll)) {
+                if (music != null && pos != position) {
                     music.stop();
                     music.release();
                     music = null;
 
-                    if(!isALL) {
-                        pos = favList.get(pos).index;
-                    }
-                    LibraryActivity.list.get(pos).isPlay = false;
-                    isALL = var.isAll;
-
-//                        list.get(pos).isPlay = false;
+                    list.get(pos).isPlay = false;
                 }
 
-                if(music == null) {
+                if (music == null) {
                     music = new MediaPlayer();
 
                     try {
@@ -189,7 +161,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
                         pos = position;
                         list.get(position).isPlay = true;
-//                        holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_pause));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -199,12 +170,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     music = null;
 
                     list.get(position).isPlay = false;
-//                    holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_play));
                 }
 
                 notifyDataSetChanged();
-            }
-        });
+                }
+            });
+        }
     }
 
     @Override
@@ -225,6 +196,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
+        public RelativeLayout layout;
         public TextView title;
         //public TextView content;
         public TextView length;
@@ -235,6 +207,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         public ViewHolder(View v) {
             super(v);
 
+            layout = v.findViewById(R.id.library_item);
             title = v.findViewById(R.id.title);
             //content = v.findViewById(R.id.content);
             length = v.findViewById(R.id.length);

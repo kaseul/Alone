@@ -49,13 +49,12 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
     // 구글
     private GoogleApiClient mGoogleApiClient;
 
-    public static ArrayList<Member> items = new ArrayList<>();//멤버
-    public static ArrayList<Member> searchlist = new ArrayList<>();
+    private ArrayList<Member> items;
+    private ArrayList<Member> searchlist;
     public static CommunityAdapter communityAdapter;
     private ListView listView;
 
     Button btn_add;
-    EditText editSearch;
 
     // 사용자 이름과 이메일, 사진
     private String mUsername;
@@ -73,9 +72,10 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_community);
 
+        items = (ArrayList<Member>) getIntent().getSerializableExtra("community_list");
+        searchlist = (ArrayList<Member>) getIntent().getSerializableExtra("community_search");
         listView = findViewById(R.id.listview);
         btn_add = findViewById(R.id.btn_add);
-        //editSearch = findViewById(R.id.et_fri_name);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
