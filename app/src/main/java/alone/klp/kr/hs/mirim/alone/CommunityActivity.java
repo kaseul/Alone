@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.google.android.gms.appinvite.AppInvite;
@@ -26,12 +28,15 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import alone.klp.kr.hs.mirim.alone.adapter.CommunityAdapter;
 import alone.klp.kr.hs.mirim.alone.model.Member;
 
+import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;
+import static alone.klp.kr.hs.mirim.alone.MainActivity.imm;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class CommunityActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
@@ -51,10 +56,12 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
 
     private ArrayList<Member> items;
     private ArrayList<Member> searchlist;
+    private ArrayList<String> keys;
     public static CommunityAdapter communityAdapter;
     private ListView listView;
 
-    Button btn_add;
+    private RelativeLayout layout;
+    private Button btn_add;
 
     // 사용자 이름과 이메일, 사진
     private String mUsername;
@@ -66,7 +73,6 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
         Toast.makeText(this, "Google Play Services error.", Toast.LENGTH_SHORT).show();
     }//구글 인증이 안되었을 떄
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,8 +80,33 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
 
         items = (ArrayList<Member>) getIntent().getSerializableExtra("community_list");
         searchlist = (ArrayList<Member>) getIntent().getSerializableExtra("community_search");
+        keys = new ArrayList<>();
         listView = findViewById(R.id.listview);
         btn_add = findViewById(R.id.btn_add);
+        layout = findViewById(R.id.layout_community);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(CommunityActivity.this, CommunityDetailActivity.class);
+                intent.putExtra("mUsername", mUsername);
+                intent.putExtra("mEmail", mEmail);
+                intent.putExtra("mPhotoUrl", mPhotoUrl);
+                intent.putExtra("PostName", items.get(position).getName());
+                intent.putExtra("PostEmail", items.get(position).getEmail());
+                intent.putExtra("PostDate", items.get(position).getDate());
+                intent.putExtra("PostPhotoUrl",items.get(position).getPhotoUrl());
+                intent.putExtra("PostText", items.get(position).getText());
+                intent.putExtra("PostKey", keys.get(keys.size() - position - 1));
+                startActivity(intent);
+            }
+        });
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -129,6 +160,7 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
         super.onResume();
         items.clear();
         searchlist.clear();
+        keys.clear();
         getDatabase();
         var.isLibrary = false;
     }
@@ -143,6 +175,7 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Member member = dataSnapshot.getValue(Member.class);
+                keys.add(dataSnapshot.getKey());
                 createMemberList(member);
             }
 

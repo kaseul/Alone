@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,6 +26,8 @@ import java.util.ArrayList;
 import alone.klp.kr.hs.mirim.alone.adapter.LibraryAdapter;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 
+import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;
+import static alone.klp.kr.hs.mirim.alone.MainActivity.imm;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class LibraryActivity extends AppCompatActivity {
@@ -39,6 +42,7 @@ public class LibraryActivity extends AppCompatActivity {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference soundRef = database.getReference().child("library");
 
+    private RelativeLayout layout;
     Button btn_lib_all;
     Button btn_lib_want;
 
@@ -54,6 +58,13 @@ public class LibraryActivity extends AppCompatActivity {
 
         btn_lib_all = findViewById(R.id.btn_lib_all);
         btn_lib_want = findViewById(R.id.btn_lib_want);
+        layout = findViewById(R.id.layout_library);
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+            }
+        });
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override

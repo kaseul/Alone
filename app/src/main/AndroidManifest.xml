@@ -20,7 +20,8 @@
         <activity android:name=".SignInActivity" />
         <activity android:name=".LibraryActivity" />
         <activity android:name=".CommunityActivity" />
-        <activity android:name=".CreateMemoActivity"></activity>
+        <activity android:name=".CreateMemoActivity" />
+        <activity android:name=".CommunityDetailActivity"></activity>
     </application>
 
 </manifest>

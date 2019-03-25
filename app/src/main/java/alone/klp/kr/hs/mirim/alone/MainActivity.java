@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
@@ -26,14 +27,15 @@ import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class MainActivity extends TabActivity {
 
-    private EditText editSearch;
+    private RelativeLayout layout;
+    public static EditText editSearch;
     private Button btn_search;
     private ArrayList<LibraryItem> lib_list;
     private ArrayList<Member> com_items;
     private ArrayList<LibraryItem> lib_search;
     private ArrayList<Member> com_search;
 
-    InputMethodManager imm;
+    public static InputMethodManager imm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +48,18 @@ public class MainActivity extends TabActivity {
         com_items = new ArrayList<Member>();
         lib_search = new ArrayList<>();
         com_search = new ArrayList<>();
+
+        layout = findViewById(R.id.layout_main);
         editSearch = findViewById(R.id.edit_search);
         btn_search = findViewById(R.id.btn_search);
+
+        // 화면 터치 시 키보드 내리기
+        layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
+            }
+        });
 
         btn_search.setOnClickListener(new View.OnClickListener() {
             @Override

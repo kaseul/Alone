@@ -37,16 +37,13 @@ public class CommunityAdapter extends BaseAdapter {
                 return o2.getDate().compareTo(o1.getDate());
             }
         });
-//        for(Member m : this.items) {
-//            Log.d("items 값", m.getName());
-//        }
-//        Log.d("사이즈 확인", this.items.size() +"");
         notifyDataSetChanged();
     }//CommunityAdapter
 
     public void setCommunityAdapter(ArrayList<Member> items) {
         this.items = items;
         Collections.reverse(items);//최근 작성 글부터 나타나게 해줌
+
         notifyDataSetChanged();
     }
 
