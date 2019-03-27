@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,7 +50,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final LibraryAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         RelativeLayout.LayoutParams params;
 
         if(!var.isAll && !list.get(position).ifFav) {
@@ -127,6 +128,26 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             if (list.get(position).isPlay)
                 holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_pause));
 
+            int min = Integer.parseInt(((String) holder.length.getText()).substring(0,1));
+            int sec = Integer.parseInt(((String) holder.length.getText()).substring(2,4));
+
+            final int time = (min * 60 + sec) * 1000;
+            holder.seekBar.setMax(time);
+            holder.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if(fromUser)
+                        if(music!=null)
+                            music.seekTo(progress);
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                }
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) { }
+            });
+
             holder.btnPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -158,12 +179,36 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                                 mp.start();
                             }
                         });
-
+                        music.setLooping(true);
                         pos = position;
                         list.get(position).isPlay = true;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
+
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(300);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            while(music.isPlaying()) {
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                if(music == null) {
+                                    holder.seekBar.setProgress(0);
+                                    break;
+                                }
+                                holder.seekBar.setProgress(music.getCurrentPosition());
+                            }
+                        }
+                    }).start();
+
                 } else {
                     music.stop();
                     music.release();
@@ -200,7 +245,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         public TextView title;
         //public TextView content;
         public TextView length;
-        public ProgressBar progressBar;
+        public SeekBar seekBar;
         public Button btnFav;
         public Button btnPlay;
 
@@ -211,7 +256,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             title = v.findViewById(R.id.title);
             //content = v.findViewById(R.id.content);
             length = v.findViewById(R.id.length);
-            progressBar = v.findViewById(R.id.progressbar);
+            seekBar = v.findViewById(R.id.seekbar);
             btnFav = v.findViewById(R.id.btn_favorite);
             btnPlay = v.findViewById(R.id.btn_play);
         }
