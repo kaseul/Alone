@@ -10,4 +10,7 @@
     <string name="action_settings">흠</string>
     <string name="hint_search">#해시태그 검색</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

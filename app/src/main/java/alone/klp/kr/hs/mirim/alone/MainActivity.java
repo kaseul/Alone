@@ -5,6 +5,10 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -18,6 +22,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import alone.klp.kr.hs.mirim.alone.adapter.PagerAdapter;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 import alone.klp.kr.hs.mirim.alone.model.Member;
 
@@ -25,7 +30,7 @@ import static alone.klp.kr.hs.mirim.alone.CommunityActivity.communityAdapter;
 import static alone.klp.kr.hs.mirim.alone.LibraryActivity.adapter;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
-public class MainActivity extends TabActivity {
+public class MainActivity extends AppCompatActivity {
 
     private RelativeLayout layout;
     public static EditText editSearch;
@@ -68,37 +73,29 @@ public class MainActivity extends TabActivity {
             }
         });
 
-        final TabHost tabHost = (TabHost) findViewById(android.R.id.tabhost);
-        tabHost.getTabWidget().setDividerDrawable(null);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.addTab(tabLayout.newTab().setText("LIBRARY"));
+        tabLayout.addTab(tabLayout.newTab().setText("COMMUNITY"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        Intent library_intent = new Intent(this, LibraryActivity.class);
-        library_intent.putExtra("library_list", lib_list);
-        library_intent.putExtra("library_search", lib_search);
-
-        Intent community_intent = new Intent(this, CommunityActivity.class);
-        community_intent.putExtra("community_list", com_items);
-        community_intent.putExtra("community_search", com_search);
-
-        tabHost.addTab(tabHost.newTabSpec("tab1").setIndicator("LIBRARY").setContent(library_intent));
-        tabHost.addTab(tabHost.newTabSpec("tab2").setIndicator("COMMUNITY").setContent(community_intent));
-
-        TextView tabTitle = (TextView) tabHost.getTabWidget().getChildAt(0).findViewById(android.R.id.title);
-        tabTitle.setTextColor(getResources().getColor(R.color.colorTabSelected));
-
-        tabTitle = (TextView) tabHost.getTabWidget().getChildAt(1).findViewById(android.R.id.title);
-        tabTitle.setTextColor(getResources().getColor(R.color.colorTab));
-
-        tabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
+        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onTabChanged(String tabId) {
-                for(int i = 0; i < tabHost.getTabWidget().getTabCount(); i++) {
-                    TextView tabTitle = (TextView) tabHost.getTabWidget().getChildAt(i).findViewById(android.R.id.title);
-                    tabTitle.setTextColor(getResources().getColor(R.color.colorTab));
-                }
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+            }
 
-                // 선택된 탭 색 바꾸기
-                TextView tabTitle = (TextView) tabHost.getTabWidget().getChildAt(tabHost.getCurrentTab()).findViewById(android.R.id.title);
-                tabTitle.setTextColor(getResources().getColor(R.color.colorTabSelected));
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
             }
         });
 
