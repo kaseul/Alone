@@ -98,7 +98,7 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
                                 Toast.LENGTH_SHORT).show();
                     } else {
                         var.UserID = FirebaseAuth.getInstance().getUid();
-                        startActivity(new Intent(SignInActivity.this, MainActivity.class));
+                        startActivity(new Intent(SignInActivity.this, TutorialActivity.class));
                         finish();
                     }//else
             }//onComplete
