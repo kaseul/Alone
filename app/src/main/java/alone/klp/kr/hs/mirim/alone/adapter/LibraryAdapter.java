@@ -1,7 +1,11 @@
 package alone.klp.kr.hs.mirim.alone.adapter;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,11 +17,16 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
@@ -28,6 +37,7 @@ import alone.klp.kr.hs.mirim.alone.R;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
+import static android.content.Context.DOWNLOAD_SERVICE;
 
 public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHolder> {
 
@@ -64,6 +74,27 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             params.height = MainActivity.dpToPx(context, 70);
             params.topMargin = MainActivity.dpToPx(context, 7);
             holder.layout.setLayoutParams(params);
+
+            holder.view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            download(list.get(position).title, list.get(position).url);
+                        }
+                    });
+                    alert.setMessage(list.get(position).title + "을 다운받으시겠습니까?");
+                    alert.show();
+                }
+            });
 
             holder.title.setText(list.get(position).title);
             //holder.content.setText(list.get(position).content);
@@ -240,6 +271,25 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    public void download(final String title, String url) {
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(url);
+
+        // Download 위치에 저장
+        File localFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), title + ".mp3");
+        storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                Toast.makeText(context, title + "를 다운로드하였습니다", Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(context, "다운로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout layout;
         public TextView title;
@@ -248,10 +298,12 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         public SeekBar seekBar;
         public Button btnFav;
         public Button btnPlay;
+        public View view;
 
         public ViewHolder(View v) {
             super(v);
 
+            view = v;
             layout = v.findViewById(R.id.library_item);
             title = v.findViewById(R.id.title);
             //content = v.findViewById(R.id.content);
