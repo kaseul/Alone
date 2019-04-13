@@ -27,6 +27,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+import alone.klp.kr.hs.mirim.alone.MainActivity;
 import alone.klp.kr.hs.mirim.alone.R;
 import alone.klp.kr.hs.mirim.alone.adapter.LibraryAdapter;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
@@ -40,10 +41,13 @@ public class LibraryFragment extends Fragment {
 
     LibraryItem item;
 
-    public static LibraryAdapter adapter;
+    public LibraryAdapter adapter;
     private ArrayList<LibraryItem> list;
     private ArrayList<LibraryItem> searchList;
     private RecyclerView libraryListRecyclerView;
+
+    Button btn_lib_all;
+    Button btn_lib_want;
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference soundRef = database.getReference().child("library");
@@ -51,7 +55,7 @@ public class LibraryFragment extends Fragment {
     private RelativeLayout layout;
 
     public LibraryFragment() {
-        // Required empty public constructor
+        var.isLibrary = true;
     }
 
     @Override
@@ -63,10 +67,18 @@ public class LibraryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_library, container, false);
 
-        libraryListRecyclerView = view.findViewById(R.id.library_recyclerview);
+        btn_lib_all = view.findViewById(R.id.btn_lib_all);
+        btn_lib_want = view.findViewById(R.id.btn_lib_want);
 
-        list = (ArrayList<LibraryItem>) getActivity().getIntent().getSerializableExtra("library_list");
-        searchList = (ArrayList<LibraryItem>) getActivity().getIntent().getSerializableExtra("library_search");
+        libraryListRecyclerView = view.findViewById(R.id.library_recyclerview);
+        list = new ArrayList<>();
+        searchList = new ArrayList<>();
+        adapter = new LibraryAdapter(list, getContext());
+        ((MainActivity) getActivity()).lib_list = list;
+        ((MainActivity) getActivity()).lib_search = searchList;
+        ((MainActivity) getActivity()).libraryAdapter = adapter;
+//        list = (ArrayList<LibraryItem>) getActivity().getIntent().getSerializableExtra("library_list");
+//        searchList = (ArrayList<LibraryItem>) getActivity().getIntent().getSerializableExtra("library_search");
 
         layout = view.findViewById(R.id.layout_library);
         layout.setOnClickListener(mClickListener);
@@ -94,6 +106,28 @@ public class LibraryFragment extends Fragment {
         };
         soundRef.addValueEventListener(postListener);
 
+        btn_lib_all.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setBackground(getContext().getResources().getDrawable(R.drawable.btn_underline));
+                View btn = view.findViewById(R.id.btn_lib_want);
+                btn.setBackground(getContext().getResources().getDrawable(R.drawable.btn_none));
+                var.isAll = true;
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        btn_lib_want.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                v.setBackground(getContext().getResources().getDrawable(R.drawable.btn_underline));
+                View btn = view.findViewById(R.id.btn_lib_all);
+                btn.setBackground(getContext().getResources().getDrawable(R.drawable.btn_none));
+                var.isAll = false;
+                adapter.notifyDataSetChanged();
+            }
+        });
+
         libraryListRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         adapter = new LibraryAdapter(list, getActivity());
         libraryListRecyclerView.setAdapter(adapter);
@@ -105,7 +139,6 @@ public class LibraryFragment extends Fragment {
         @Override
         public void onClick(View v) {
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
-
         }
     };
 

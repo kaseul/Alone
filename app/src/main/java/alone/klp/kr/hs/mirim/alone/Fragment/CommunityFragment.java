@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +23,8 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
@@ -41,6 +44,7 @@ import alone.klp.kr.hs.mirim.alone.model.Member;
 
 import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;
 import static alone.klp.kr.hs.mirim.alone.MainActivity.imm;
+import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class CommunityFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener{
     private static final String TAG = MainActivity.class.getSimpleName();
@@ -60,7 +64,7 @@ public class CommunityFragment extends Fragment implements GoogleApiClient.OnCon
     private ArrayList<Member> items;
     private ArrayList<Member> searchlist;
     private ArrayList<String> keys;
-    public static CommunityAdapter communityAdapter;
+    public CommunityAdapter communityAdapter;
     private ListView listView;
 
     private RelativeLayout layout;
@@ -77,7 +81,7 @@ public class CommunityFragment extends Fragment implements GoogleApiClient.OnCon
     }//구글 인증이 안되었을 떄
 
     public CommunityFragment() {
-        // Required empty public constructor
+        var.isLibrary = false;
     }
 
     @Override
@@ -89,8 +93,14 @@ public class CommunityFragment extends Fragment implements GoogleApiClient.OnCon
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_community, container, false);
 
-        items = (ArrayList<Member>) getActivity().getIntent().getSerializableExtra("community_list");
-        searchlist = (ArrayList<Member>) getActivity().getIntent().getSerializableExtra("community_search");
+        items = new ArrayList<>();
+        searchlist = new ArrayList<Member>();
+        communityAdapter = new CommunityAdapter(items);
+        ((MainActivity) getActivity()).com_items = items;
+        ((MainActivity) getActivity()).com_search = searchlist;
+        ((MainActivity) getActivity()).communityAdapter = communityAdapter;
+//        items = (ArrayList<Member>) getActivity().getIntent().getSerializableExtra("community_list");
+//        searchlist = (ArrayList<Member>) getActivity().getIntent().getSerializableExtra("community_search");
         keys = new ArrayList<>();
         listView = view.findViewById(R.id.listview);
         btn_add = view.findViewById(R.id.btn_add);
@@ -166,5 +176,56 @@ public class CommunityFragment extends Fragment implements GoogleApiClient.OnCon
 
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        items.clear();
+        searchlist.clear();
+        keys.clear();
+        getDatabase();
+        var.isLibrary = false;
+    }
+
+    //함수 getDatabase()
+    private void getDatabase() {
+        mDatabase = FirebaseDatabase.getInstance();
+
+        mReference = mDatabase.getReference("messages");
+
+        mChild = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Member member = dataSnapshot.getValue(Member.class);
+                keys.add(dataSnapshot.getKey());
+                createMemberList(member);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        };//mchild
+        mReference.addChildEventListener(mChild);
+    }//getDatabase()
+
+    private void  createMemberList(Member member){
+        items.add(member);
+        searchlist.add(member);
+        Log.d("값 확인", member.getText() + " " + items.size());
+        communityAdapter = new CommunityAdapter(items);
+        listView.setAdapter(communityAdapter);
+    }//createMemberList
 
 }

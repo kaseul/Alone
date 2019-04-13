@@ -11,6 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -22,12 +23,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import alone.klp.kr.hs.mirim.alone.adapter.CommunityAdapter;
+import alone.klp.kr.hs.mirim.alone.adapter.LibraryAdapter;
 import alone.klp.kr.hs.mirim.alone.adapter.PagerAdapter;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 import alone.klp.kr.hs.mirim.alone.model.Member;
 
-import static alone.klp.kr.hs.mirim.alone.CommunityActivity.communityAdapter;
-import static alone.klp.kr.hs.mirim.alone.LibraryActivity.adapter;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class MainActivity extends AppCompatActivity {
@@ -35,10 +36,13 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout layout;
     public static EditText editSearch;
     private Button btn_search;
-    private ArrayList<LibraryItem> lib_list;
-    private ArrayList<Member> com_items;
-    private ArrayList<LibraryItem> lib_search;
-    private ArrayList<Member> com_search;
+    public ArrayList<LibraryItem> lib_list;
+    public ArrayList<Member> com_items;
+    public ArrayList<LibraryItem> lib_search;
+    public ArrayList<Member> com_search;
+    public LibraryAdapter libraryAdapter;
+    public CommunityAdapter communityAdapter;
+    private boolean isFirst = true;
 
     public static InputMethodManager imm;
 
@@ -86,6 +90,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 viewPager.setCurrentItem(tab.getPosition());
+                isFirst = false;
+                Log.d("tab", tab.getPosition() +"");
+                if(tab.getPosition() == 0) {
+                    var.isLibrary = true;
+                    libraryAdapter.setLibraryAdapter(lib_search);
+                }
+                else {
+                    var.isLibrary = false;
+                    communityAdapter.setCommunityAdapter(com_search);
+                }
             }
 
             @Override
@@ -131,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
         });
-
     }
 
     public static int dpToPx(Context context, int dpValue) {
@@ -141,7 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
     // 검색을 수행하는 메소드
     public void search(String charText) {
-        if(var.isLibrary) {
+        if(var.isLibrary || isFirst) {
             // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
             lib_list.clear();
 
@@ -163,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             // 리스트 데이터가 변경되었으므로 아답터를 갱신하여 검색된 데이터를 화면에 보여준다.
-            adapter.notifyDataSetChanged();
+            libraryAdapter.notifyDataSetChanged();
         } else {
             // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
             com_items.clear();
