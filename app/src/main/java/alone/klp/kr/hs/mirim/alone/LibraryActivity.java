@@ -156,38 +156,4 @@ public class LibraryActivity extends AppCompatActivity {
                 });
     }
 
-    public void uploadSound() {
-//        item = new LibraryItem();
-//        item.title = "키보드 소리";
-//        item.content = "#타자소리 #일상";
-//        item.length = "3:14";
-//        item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%ED%82%A4%EB%B3%B4%EB%93%9C%20%EC%86%8C%EB%A6%AC.mp3?alt=media&token=44cffef4-0811-46b4-acd5-b383eadb5016";
-////        list.add(item);
-////
-//        soundRef.push().setValue(item);
-//        item = new LibraryItem();
-//        item.title = "기침 소리";
-//        item.content = "#기침 #남자";
-//        item.length = "3:02";
-//        item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EA%B8%B0%EC%B9%A8%20%EC%86%8C%EB%A6%AC.mp3?alt=media&token=cb243e3b-7fb1-4aa5-85e8-eccd74d8fae4";
-////        list.add(item);
-////
-//        soundRef.push().setValue(item);
-//        item = new LibraryItem();
-//        item.title = "설거지 소리";
-//        item.content = "#설거지 #부엌";
-//        item.length = "1:49";
-//        item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%84%A4%EA%B1%B0%EC%A7%80%20%EC%86%8C%EB%A6%AC.mp3?alt=media&token=21517e14-39b3-4f11-9af5-cfa1d6654276";
-////        list.add(item);
-////
-//        soundRef.push().setValue(item);
-//        item = new LibraryItem();
-//        item.title = "헤어드라이기 소리";
-//        item.content = "#헤어드라이기 #일상";
-//        item.length = "3:01";
-//        item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%ED%97%A4%EC%96%B4%EB%93%9C%EB%9D%BC%EC%9D%B4%EA%B8%B0%20%EC%86%8C%EB%A6%AC.mp3?alt=media&token=3a97d13a-d1db-4d5d-8ce5-e70b8fd69cc6";
-////        list.add(item);
-//
-//        soundRef.push().setValue(item);
-    }
 }

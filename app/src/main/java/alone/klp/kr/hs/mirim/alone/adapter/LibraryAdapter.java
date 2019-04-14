@@ -187,13 +187,16 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             holder.btnPlay.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                 holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_pause));
                 Log.e("list", pos + "");
+
                 if (music != null && pos != position) {
                     music.stop();
                     music.release();
                     music = null;
 
                     list.get(pos).isPlay = false;
+                    notifyItemChanged(pos);
                 }
 
                 if (music == null) {
@@ -218,32 +221,37 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                         music.setLooping(true);
                         pos = position;
                         list.get(position).isPlay = true;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
 
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(300);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                            while(music.isPlaying()) {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
                                 try {
-                                    Thread.sleep(1000);
+                                    Thread.sleep(300);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
-                                if(music == null) {
-                                    holder.seekBar.setProgress(0);
-                                    break;
+                                while(music.isPlaying()) {
+                                    try {
+                                        Thread.sleep(1000);
+                                    } catch (InterruptedException e) {
+                                        e.printStackTrace();
+                                    }
+                                    if(music == null) {
+                                        holder.seekBar.setProgress(0);
+                                        break;
+                                    }
+                                    holder.seekBar.setProgress(music.getCurrentPosition());
+                                    Log.e("list music ",String.valueOf(music.getCurrentPosition()) + " " + holder.title.getText());
                                 }
-                                holder.seekBar.setProgress(music.getCurrentPosition());
                             }
-                        }
-                    }).start();
+                        }).start();
+
+                    } catch(IllegalStateException e) {
+                        holder.seekBar.setProgress(0);
+                    }
+                    catch (IOException e) {
+                        e.printStackTrace();
+                    }
 
                 } else {
                     music.stop();
@@ -251,9 +259,8 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     music = null;
 
                     list.get(position).isPlay = false;
+                    holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_play));
                 }
-
-                notifyDataSetChanged();
                 }
             });
         }

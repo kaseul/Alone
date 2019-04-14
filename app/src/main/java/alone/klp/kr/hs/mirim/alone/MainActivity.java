@@ -22,6 +22,9 @@ import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 import alone.klp.kr.hs.mirim.alone.adapter.CommunityAdapter;
@@ -33,6 +36,11 @@ import alone.klp.kr.hs.mirim.alone.model.Member;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class MainActivity extends AppCompatActivity {
+
+//    LibraryItem item = new LibraryItem();
+//
+//    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+//    final DatabaseReference soundRef = database.getReference().child("library");
 
     private RelativeLayout layout;
     public static EditText editSearch;
@@ -283,4 +291,14 @@ public class MainActivity extends AppCompatActivity {
         }
         return false; //일치하는 것을 찾지 못했으면 false를 리턴한다.
     }
+
+//    public void uploadSound() {
+//        item = new LibraryItem();
+//        item.title = "티비 소리";
+//        item.content = "#티비 #일상";
+//        item.length = "0:17";
+//        item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%ED%8B%B0%EB%B9%84.mp3?alt=media&token=002cb408-03f5-47f7-ac7b-75e0334e5699";
+//
+//        soundRef.push().setValue(item);
+//    }
 }

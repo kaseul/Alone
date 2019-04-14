@@ -40,6 +40,7 @@ import alone.klp.kr.hs.mirim.alone.CreateMemoActivity;
 import alone.klp.kr.hs.mirim.alone.MainActivity;
 import alone.klp.kr.hs.mirim.alone.R;
 import alone.klp.kr.hs.mirim.alone.adapter.CommunityAdapter;
+import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 import alone.klp.kr.hs.mirim.alone.model.Member;
 
 import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;
