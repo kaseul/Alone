@@ -3,6 +3,7 @@ package alone.klp.kr.hs.mirim.alone.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Environment;
@@ -10,6 +11,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -46,7 +48,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     MediaPlayer music;
     int pos = -1;
-    boolean isALL = true;
 
     public LibraryAdapter(List<LibraryItem> list, Context context) {
         this.list = list;
@@ -91,13 +92,15 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                             download(list.get(position).title, list.get(position).url);
                         }
                     });
-                    alert.setMessage(list.get(position).title + "을 다운받으시겠습니까?");
+                    alert.setMessage(list.get(position).title + "를 다운받으시겠습니까?");
                     alert.show();
                 }
             });
 
             holder.title.setText(list.get(position).title);
             //holder.content.setText(list.get(position).content);
+            holder.hashtag1.setText(list.get(position).content.substring(0, list.get(position).content.indexOf("#", 1)-1));
+            holder.hashtag2.setText(list.get(position).content.substring(list.get(position).content.indexOf("#", 1)));
             holder.length.setText(list.get(position).length);
 
             holder.btnFav.setBackground(context.getResources().getDrawable(R.drawable.unfavorite));
@@ -275,11 +278,16 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(url);
 
         // Download 위치에 저장
-        File localFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), title + ".mp3");
+        final File localFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), title + ".mp3");
         storageRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                 Toast.makeText(context, title + "를 다운로드하였습니다", Toast.LENGTH_SHORT).show();
+
+                // 다운로드 후 다른 앱에서 읽어오기
+                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+                intent.setData(Uri.fromFile(localFile));
+                context.sendBroadcast(intent);
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
@@ -287,13 +295,14 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                 Toast.makeText(context, "다운로드에 실패하였습니다", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         public RelativeLayout layout;
         public TextView title;
         //public TextView content;
+        public TextView hashtag1;
+        public TextView hashtag2;
         public TextView length;
         public SeekBar seekBar;
         public Button btnFav;
@@ -307,8 +316,16 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             layout = v.findViewById(R.id.library_item);
             title = v.findViewById(R.id.title);
             //content = v.findViewById(R.id.content);
+            hashtag1 = v.findViewById(R.id.hashtag1);
+            hashtag2 = v.findViewById(R.id.hashtag2);
             length = v.findViewById(R.id.length);
             seekBar = v.findViewById(R.id.seekbar);
+            seekBar.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
             btnFav = v.findViewById(R.id.btn_favorite);
             btnPlay = v.findViewById(R.id.btn_play);
         }

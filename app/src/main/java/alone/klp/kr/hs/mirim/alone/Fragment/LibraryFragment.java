@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -38,7 +39,6 @@ import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 
 public class LibraryFragment extends Fragment {
-
     LibraryItem item;
 
     public LibraryAdapter adapter;
@@ -77,6 +77,7 @@ public class LibraryFragment extends Fragment {
         ((MainActivity) getActivity()).lib_list = list;
         ((MainActivity) getActivity()).lib_search = searchList;
         ((MainActivity) getActivity()).libraryAdapter = adapter;
+        ((MainActivity) getActivity()).library_recycler = libraryListRecyclerView;
 //        list = (ArrayList<LibraryItem>) getActivity().getIntent().getSerializableExtra("library_list");
 //        searchList = (ArrayList<LibraryItem>) getActivity().getIntent().getSerializableExtra("library_search");
 

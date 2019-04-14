@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     public ArrayList<Member> com_search;
     public LibraryAdapter libraryAdapter;
     public CommunityAdapter communityAdapter;
+    public RecyclerView library_recycler;
     private boolean isFirst = true;
 
     public static InputMethodManager imm;
@@ -176,7 +178,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
             // 리스트 데이터가 변경되었으므로 아답터를 갱신하여 검색된 데이터를 화면에 보여준다.
-            libraryAdapter.notifyDataSetChanged();
+            libraryAdapter.setLibraryAdapter(lib_list);
+            library_recycler.setAdapter(libraryAdapter);
         } else {
             // 문자 입력시마다 리스트를 지우고 새로 뿌려준다.
             com_items.clear();
