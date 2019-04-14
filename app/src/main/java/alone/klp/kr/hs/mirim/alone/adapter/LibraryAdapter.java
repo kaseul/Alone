@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
@@ -76,9 +77,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             params.topMargin = MainActivity.dpToPx(context, 7);
             holder.layout.setLayoutParams(params);
 
-            holder.view.setOnClickListener(new View.OnClickListener() {
+            holder.view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
-                public void onClick(View v) {
+                public boolean onLongClick(View v) {
                     AlertDialog.Builder alert = new AlertDialog.Builder(context);
                     alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
                         @Override
@@ -94,6 +95,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     });
                     alert.setMessage(list.get(position).title + "를 다운받으시겠습니까?");
                     alert.show();
+                    return true;
                 }
             });
 
@@ -285,9 +287,20 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                 Toast.makeText(context, title + "를 다운로드하였습니다", Toast.LENGTH_SHORT).show();
 
                 // 다운로드 후 다른 앱에서 읽어오기
-                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
-                intent.setData(Uri.fromFile(localFile));
-                context.sendBroadcast(intent);
+//                Intent intent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+//                intent.setData(Uri.fromFile(localFile));
+//                Log.v("setData", Uri.fromFile(localFile).toString());
+//                context.sendBroadcast(intent);
+
+                // 다운로드 후 다른 앱에서 읽어오기
+                MediaScannerConnection.scanFile(context,
+                        new String[] { localFile.getAbsolutePath() }, null,
+                        new MediaScannerConnection.OnScanCompletedListener() {
+                            public void onScanCompleted(String path, Uri uri) {
+                                Log.i("ExternalStorage", "Scanned " + path + ":");
+                                Log.i("ExternalStorage", "-> uri=" + uri);
+                            }
+                        });
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
