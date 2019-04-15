@@ -27,6 +27,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import alone.klp.kr.hs.mirim.alone.MainActivity;
 import alone.klp.kr.hs.mirim.alone.R;
@@ -43,6 +44,7 @@ public class LibraryFragment extends Fragment {
 
     public LibraryAdapter adapter;
     private ArrayList<LibraryItem> list;
+    private ArrayList<String> hashtags;
     private ArrayList<LibraryItem> searchList;
     private RecyclerView libraryListRecyclerView;
 
@@ -73,6 +75,7 @@ public class LibraryFragment extends Fragment {
         libraryListRecyclerView = view.findViewById(R.id.library_recyclerview);
         list = new ArrayList<>();
         searchList = new ArrayList<>();
+        hashtags = new ArrayList<>();
         adapter = new LibraryAdapter(list, getContext());
         ((MainActivity) getActivity()).lib_list = list;
         ((MainActivity) getActivity()).lib_search = searchList;
@@ -89,12 +92,21 @@ public class LibraryFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 list.clear();
                 searchList.clear();
+                hashtags.clear();
                 for(DataSnapshot soundsData : dataSnapshot.getChildren()){
                     item = soundsData.getValue(LibraryItem.class);
                     list.add(item);
                     searchList.add(item);
-                    Log.d("즐", list.size()+ "");
+                    hashtags.add(item.content.substring(0, item.content.indexOf('#', 1)-1));
+                    hashtags.add(item.content.substring(item.content.indexOf('#', 1)));
                 }
+                // 해시태그 중복 제거
+                ArrayList<String> distincHashtags = new ArrayList<String>();
+                for(int i = 0; i < hashtags.size(); i++) {
+                    if(!distincHashtags.contains(hashtags.get(i)))
+                        distincHashtags.add(hashtags.get(i));
+                }
+                ((MainActivity) getActivity()).arrayAdapter.addAll(distincHashtags);
                 getFavorite();
 
                 adapter.notifyDataSetChanged();

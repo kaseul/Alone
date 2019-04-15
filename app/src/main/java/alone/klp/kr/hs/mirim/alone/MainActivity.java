@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
@@ -43,7 +45,9 @@ public class MainActivity extends AppCompatActivity {
 //    final DatabaseReference soundRef = database.getReference().child("library");
 
     private RelativeLayout layout;
-    public static EditText editSearch;
+    //public static EditText editSearch;
+    public static AutoCompleteTextView editSearch;
+    public ArrayAdapter<String> arrayAdapter;
     private Button btn_search;
     public ArrayList<LibraryItem> lib_list;
     public ArrayList<Member> com_items;
@@ -122,6 +126,9 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, new ArrayList<String>());
+        editSearch.setAdapter(arrayAdapter);
 
         editSearch.setOnKeyListener(new View.OnKeyListener() {
             @Override
