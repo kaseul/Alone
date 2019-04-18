@@ -23,9 +23,34 @@ public class SpeakerActivity extends AppCompatActivity {
         mapSpeak.put("켜줘", true);
         mapSpeak.put("켜져라", true);
         mapSpeak.put("전원 켜", true);
+        mapSpeak.put("저넌 켜", true);
+        mapSpeak.put("저눤 켜", true);
         mapSpeak.put("전원 켜줘", true);
+        mapSpeak.put("저넌 켜줘", true);
+        mapSpeak.put("저눤 켜줘", true);
+        mapSpeak.put("전원 켜져", true);
+        mapSpeak.put("저넌 켜져", true);
+        mapSpeak.put("저눤 켜져", true);
         mapSpeak.put("스피커 켜", true);
+        mapSpeak.put("스피카 켜", true);
         mapSpeak.put("스피커 켜줘", true);
-
+        mapSpeak.put("스피카 켜줘", true);
+        mapSpeak.put("꺼", false);
+        mapSpeak.put("꺼져", false);
+        mapSpeak.put("꺼줘", false);
+        mapSpeak.put("꺼져라", false);
+        mapSpeak.put("전원 꺼", false);
+        mapSpeak.put("저넌 꺼", false);
+        mapSpeak.put("저눤 꺼", false);
+        mapSpeak.put("전원 꺼줘", false);
+        mapSpeak.put("저넌 꺼줘", false);
+        mapSpeak.put("저눤 꺼줘", false);
+        mapSpeak.put("전원 꺼져", false);
+        mapSpeak.put("저넌 꺼져", false);
+        mapSpeak.put("저눤 꺼져", false);
+        mapSpeak.put("스피커 꺼", false);
+        mapSpeak.put("스피카 꺼", false);
+        mapSpeak.put("스피커 꺼줘", false);
+        mapSpeak.put("스피카 꺼줘", false);
     }
 }
