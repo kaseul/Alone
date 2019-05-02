@@ -4,4 +4,5 @@ public class varStructure {
     public String UserID;
     public boolean isLibrary = true;
     public boolean isAll = true;
+    public boolean isSpeakConnect = false;
 }

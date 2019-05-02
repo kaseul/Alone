@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SpeakerActivity"
+    android:background="@color/colorBackground"
+    >
+
+    <TextView
+        android:id="@+id/text_onoff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="스피커 전원"
+        />
+
+    <Switch
+        android:id="@+id/switch_speaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        />
+
+    <Button
+        android:id="@+id/btn_network"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="networkTest"
+        android:layout_below="@id/text_onoff"
+        />
+
+</RelativeLayout>

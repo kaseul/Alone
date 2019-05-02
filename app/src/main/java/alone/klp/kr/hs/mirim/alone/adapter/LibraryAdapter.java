@@ -37,7 +37,9 @@ import java.util.Map;
 
 import alone.klp.kr.hs.mirim.alone.MainActivity;
 import alone.klp.kr.hs.mirim.alone.R;
+import alone.klp.kr.hs.mirim.alone.SpeakerActivity;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
+import alone.klp.kr.hs.mirim.alone.task.NetworkAsync;
 
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 import static android.content.Context.DOWNLOAD_SERVICE;
@@ -194,6 +196,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     music.stop();
                     music.release();
                     music = null;
+                    if(var.isSpeakConnect) {
+                        NetworkAsync network = new NetworkAsync(context, "http://10.96.123.164/stop");
+                        network.execute(100);
+                    }
 
                     list.get(pos).isPlay = false;
                     notifyItemChanged(pos);
@@ -221,6 +227,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                         music.setLooping(true);
                         pos = position;
                         list.get(position).isPlay = true;
+                        if(var.isSpeakConnect) {
+                            NetworkAsync network = new NetworkAsync(context, "http://10.96.123.164/" + (position + 1));
+                            network.execute(100);
+                        }
 
                         new Thread(new Runnable() {
                             @Override
@@ -257,6 +267,10 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     music.stop();
                     music.release();
                     music = null;
+                    if(var.isSpeakConnect) {
+                        NetworkAsync network = new NetworkAsync(context, "http://10.96.123.164/pause");
+                        network.execute(100);
+                    }
 
                     list.get(position).isPlay = false;
                     holder.btnPlay.setBackground(context.getResources().getDrawable(R.drawable.btn_play));

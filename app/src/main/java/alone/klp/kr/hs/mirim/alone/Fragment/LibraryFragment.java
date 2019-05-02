@@ -1,6 +1,7 @@
 package alone.klp.kr.hs.mirim.alone.Fragment;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,7 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.RelativeLayout;
+import android.widget.Switch;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,8 +35,10 @@ import java.util.HashSet;
 
 import alone.klp.kr.hs.mirim.alone.MainActivity;
 import alone.klp.kr.hs.mirim.alone.R;
+import alone.klp.kr.hs.mirim.alone.SpeakerActivity;
 import alone.klp.kr.hs.mirim.alone.adapter.LibraryAdapter;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
+import alone.klp.kr.hs.mirim.alone.task.NetworkAsync;
 
 import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;
 import static alone.klp.kr.hs.mirim.alone.MainActivity.imm;
@@ -50,6 +56,7 @@ public class LibraryFragment extends Fragment {
 
     Button btn_lib_all;
     Button btn_lib_want;
+    Switch sw_speaker;
 
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference soundRef = database.getReference().child("library");
@@ -71,6 +78,7 @@ public class LibraryFragment extends Fragment {
 
         btn_lib_all = view.findViewById(R.id.btn_lib_all);
         btn_lib_want = view.findViewById(R.id.btn_lib_want);
+        sw_speaker = view.findViewById(R.id.switch_speaker);
 
         libraryListRecyclerView = view.findViewById(R.id.library_recyclerview);
         list = new ArrayList<>();
@@ -138,6 +146,27 @@ public class LibraryFragment extends Fragment {
                 btn.setBackground(getContext().getResources().getDrawable(R.drawable.btn_none));
                 var.isAll = false;
                 adapter.notifyDataSetChanged();
+            }
+        });
+
+        sw_speaker.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                AudioManager audioManager = (AudioManager) getActivity().getSystemService(Context.AUDIO_SERVICE);
+                if(b) {
+                    Toast.makeText(getContext(), "스피커를 켰습니다.", Toast.LENGTH_SHORT).show();
+                    var.isSpeakConnect = true;
+
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, AudioManager.FLAG_PLAY_SOUND);
+                } else {
+                    Toast.makeText(getContext(), "스피커를 껐습니다.", Toast.LENGTH_SHORT).show();
+                    var.isSpeakConnect = false;
+
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_PLAY_SOUND);
+
+                    NetworkAsync network = new NetworkAsync(getContext(), "http://10.96.123.164/stop");
+                    network.execute(100);
+                }
             }
         });
 
