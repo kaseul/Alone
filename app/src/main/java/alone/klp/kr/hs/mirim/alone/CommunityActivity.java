@@ -35,7 +35,7 @@ import java.util.Map;
 import alone.klp.kr.hs.mirim.alone.adapter.CommunityAdapter;
 import alone.klp.kr.hs.mirim.alone.model.Member;
 
-import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;
+/*import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;*/
 import static alone.klp.kr.hs.mirim.alone.MainActivity.imm;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
@@ -84,12 +84,12 @@ public class CommunityActivity extends AppCompatActivity implements GoogleApiCli
         listView = findViewById(R.id.listview);
         btn_add = findViewById(R.id.btn_add);
         layout = findViewById(R.id.layout_community);
-        layout.setOnClickListener(new View.OnClickListener() {
+        /*layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
             }
-        });
+        });*/
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -5,15 +5,22 @@ import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
@@ -23,6 +30,7 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RelativeLayout layout;
     //public static EditText editSearch;
-    public static AutoCompleteTextView editSearch;
+    /*public static AutoCompleteTextView editSearch;*/
     public ArrayAdapter<String> arrayAdapter;
     private Button btn_search;
     public ArrayList<LibraryItem> lib_list;
@@ -60,18 +68,70 @@ public class MainActivity extends AppCompatActivity {
 
     public static InputMethodManager imm;
 
+    private DrawerLayout mDrawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setHomeAsUpIndicator(R.drawable.btn_menu);
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.layout_drawer);
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
+                mDrawerLayout.closeDrawers();
+
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.item_life:
+                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.item_animal:
+                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.item_vacation:
+                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.item_person:
+                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.item_ect:
+                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.nav_sub_menu_item01:
+                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        break;
+
+                    case R.id.nav_sub_menu_item02:
+                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
+                        break;
+                }
+
+                return true;
+            }
+        });
+
+        /*imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);*/
 
         lib_list = new ArrayList<LibraryItem>();
         com_items = new ArrayList<Member>();
         lib_search = new ArrayList<>();
         com_search = new ArrayList<>();
-
+/*
         layout = findViewById(R.id.layout_main);
         editSearch = findViewById(R.id.edit_search);
         btn_search = findViewById(R.id.btn_search);
@@ -90,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
                 imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
             }
         });
+*/
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.addTab(tabLayout.newTab().setText("LIBRARY"));
@@ -127,7 +188,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, new ArrayList<String>());
+        /*
+       arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, new ArrayList<String>());
         editSearch.setAdapter(arrayAdapter);
 
         editSearch.setOnKeyListener(new View.OnKeyListener() {
@@ -150,7 +212,6 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -161,7 +222,29 @@ public class MainActivity extends AppCompatActivity {
                 search(text);
             }
 
-        });
+        });*/
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        switch (id) {
+            case android.R.id.home:
+                mDrawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public static int dpToPx(Context context, int dpValue) {

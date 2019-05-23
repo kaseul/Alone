@@ -43,7 +43,7 @@ import alone.klp.kr.hs.mirim.alone.adapter.CommunityAdapter;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 import alone.klp.kr.hs.mirim.alone.model.Member;
 
-import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;
+/*import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;*/
 import static alone.klp.kr.hs.mirim.alone.MainActivity.imm;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
@@ -106,12 +106,12 @@ public class CommunityFragment extends Fragment implements GoogleApiClient.OnCon
         listView = view.findViewById(R.id.listview);
         btn_add = view.findViewById(R.id.btn_add);
         layout = view.findViewById(R.id.layout_community);
-        layout.setOnClickListener(new View.OnClickListener() {
+        /*layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
             }
-        });
+        });*/
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

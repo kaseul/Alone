@@ -34,7 +34,7 @@ import alone.klp.kr.hs.mirim.alone.R;
 import alone.klp.kr.hs.mirim.alone.adapter.LibraryAdapter;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 
-import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;
+/*import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;*/
 import static alone.klp.kr.hs.mirim.alone.MainActivity.imm;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
@@ -85,7 +85,7 @@ public class LibraryFragment extends Fragment {
 //        searchList = (ArrayList<LibraryItem>) getActivity().getIntent().getSerializableExtra("library_search");
 
         layout = view.findViewById(R.id.layout_library);
-        layout.setOnClickListener(mClickListener);
+        /*layout.setOnClickListener(mClickListener);*/
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -100,6 +100,8 @@ public class LibraryFragment extends Fragment {
                     hashtags.add(item.content.substring(0, item.content.indexOf('#', 1)-1));
                     hashtags.add(item.content.substring(item.content.indexOf('#', 1)));
                 }
+
+                /*
                 // 해시태그 중복 제거
                 ArrayList<String> distincHashtags = new ArrayList<String>();
                 for(int i = 0; i < hashtags.size(); i++) {
@@ -108,7 +110,7 @@ public class LibraryFragment extends Fragment {
                 }
                 ((MainActivity) getActivity()).arrayAdapter.addAll(distincHashtags);
                 getFavorite();
-
+                */
                 adapter.notifyDataSetChanged();
             }
 
@@ -148,12 +150,12 @@ public class LibraryFragment extends Fragment {
         return view;
     }
 
-    View.OnClickListener mClickListener = new View.OnClickListener() {
+/*    View.OnClickListener mClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
         }
-    };
+    };*/
 
     @Override
     public void onResume() {

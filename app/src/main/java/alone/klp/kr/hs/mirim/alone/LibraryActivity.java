@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import alone.klp.kr.hs.mirim.alone.adapter.LibraryAdapter;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 
-import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;
+/*import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;*/
 import static alone.klp.kr.hs.mirim.alone.MainActivity.imm;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
@@ -59,12 +59,12 @@ public class LibraryActivity extends AppCompatActivity {
         btn_lib_all = findViewById(R.id.btn_lib_all);
         btn_lib_want = findViewById(R.id.btn_lib_want);
         layout = findViewById(R.id.layout_library);
-        layout.setOnClickListener(new View.OnClickListener() {
+        /*layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
             }
-        });
+        });*/
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
