@@ -5,12 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".SignInActivity">
+    tools:context=".SignInActivity"
+    android:background="@color/colorBackground"
+    >
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/sign_in_button"
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="visible" /><!--구글로그인버튼-->
+        android:paddingBottom="100dp"
+        android:layout_centerInParent="true"
+        >
+
+        <ImageView
+            android:id="@+id/image_icon"
+            android:layout_width="160dp"
+            android:layout_height="200dp"
+            android:src="@drawable/icon_logo"
+            android:layout_centerHorizontal="true"
+            />
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="175dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_login_button"
+            android:text="로그인"
+            android:textColor="@color/colorBackground"
+            android:textStyle="bold"
+            android:layout_below="@+id/image_icon"
+            android:layout_marginTop="10dp"
+            />
+
+    </RelativeLayout>
 
 </RelativeLayout>
