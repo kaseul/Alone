@@ -3,6 +3,7 @@ package alone.klp.kr.hs.mirim.alone;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -38,7 +39,7 @@ public class TutorialActivity extends AppCompatActivity {
                 moveNextView();
             }
         });
-        btn_cancel = findViewById(R.id.btn_cancel);
+        /*btn_cancel = findViewById(R.id.btn_cancel);
         btn_cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,7 +47,7 @@ public class TutorialActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
         btn_start = findViewById(R.id.btn_start);
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,6 +64,9 @@ public class TutorialActivity extends AppCompatActivity {
             viewFlipper.setInAnimation(AnimationUtils.loadAnimation(this, R.anim.appear_from_right));
             viewFlipper.setOutAnimation(AnimationUtils.loadAnimation(this, R.anim.disappear_to_left));
             viewFlipper.showNext();
+            Log.i("페이지확인","넘어간다");
+        } else {
+            Log.i("마지막페이지","였으면 좋겠다");
         }
     }
 

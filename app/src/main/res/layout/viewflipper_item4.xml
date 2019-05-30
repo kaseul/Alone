@@ -7,13 +7,14 @@
 
     <Button
         android:id="@+id/btn_start"
-        android:layout_width="match_parent"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:text="시작하기"
         android:textStyle="bold"
-        android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimary"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/colorPrimary"
+        android:layout_alignParentEnd="true"
+        android:background="#00FF0000"
+        android:layout_marginTop="18dp"
         />
 
 </RelativeLayout>
