@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -41,6 +42,7 @@ import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class LibraryFragment extends Fragment {
     LibraryItem item;
+    String category;
 
     public LibraryAdapter adapter;
     private ArrayList<LibraryItem> list;
@@ -58,6 +60,14 @@ public class LibraryFragment extends Fragment {
 
     public LibraryFragment() {
         var.isLibrary = true;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+        if(!this.category.equals("All")) {
+            FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.detach(this).attach(this).commit();
+        }
     }
 
     @Override
@@ -95,13 +105,23 @@ public class LibraryFragment extends Fragment {
                 hashtags.clear();
                 for(DataSnapshot soundsData : dataSnapshot.getChildren()){
                     item = soundsData.getValue(LibraryItem.class);
-                    list.add(item);
-                    searchList.add(item);
-                    hashtags.add(item.content.substring(0, item.content.indexOf('#', 1)-1));
-                    hashtags.add(item.content.substring(item.content.indexOf('#', 1)));
+                    Log.i("categoryCheck",item.category);
+                    Log.i("categoryThis",category);
+                    if(category.equals("All")) {
+                        list.add(item);
+                        searchList.add(item);
+                        hashtags.add(item.content.substring(0, item.content.indexOf('#', 1) - 1));
+                        hashtags.add(item.content.substring(item.content.indexOf('#', 1)));
+                    } else {
+                        if(item.category.equals(category)) {
+                            list.add(item);
+                            searchList.add(item);
+                            hashtags.add(item.content.substring(0, item.content.indexOf('#', 1) - 1));
+                            hashtags.add(item.content.substring(item.content.indexOf('#', 1)));
+                        }
+                    }
                 }
 
-                /*
                 // 해시태그 중복 제거
                 ArrayList<String> distincHashtags = new ArrayList<String>();
                 for(int i = 0; i < hashtags.size(); i++) {
@@ -110,7 +130,6 @@ public class LibraryFragment extends Fragment {
                 }
                 ((MainActivity) getActivity()).arrayAdapter.addAll(distincHashtags);
                 getFavorite();
-                */
                 adapter.notifyDataSetChanged();
             }
 

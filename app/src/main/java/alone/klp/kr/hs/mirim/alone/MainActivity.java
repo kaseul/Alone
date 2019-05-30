@@ -1,6 +1,7 @@
 package alone.klp.kr.hs.mirim.alone;
 
 import android.app.Activity;
+import android.app.LauncherActivity;
 import android.app.TabActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -49,16 +50,13 @@ import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 public class MainActivity extends AppCompatActivity {
 
-//    LibraryItem item = new LibraryItem();
-//
-//    final FirebaseDatabase database = FirebaseDatabase.getInstance();
-//    final DatabaseReference soundRef = database.getReference().child("library");
-
-    private RelativeLayout layout;
     //public static EditText editSearch;
     /*public static AutoCompleteTextView editSearch;*/
+    LibraryItem item;
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference soundRef = database.getReference().child("library");
     public ArrayAdapter<String> arrayAdapter;
-    private Button btn_search;
+
     public ArrayList<LibraryItem> lib_list;
     public ArrayList<Member> com_items;
     public ArrayList<LibraryItem> lib_search;
@@ -71,6 +69,9 @@ public class MainActivity extends AppCompatActivity {
     public static InputMethodManager imm;
 
     private DrawerLayout mDrawerLayout;
+    ViewPager viewPager;
+    PagerAdapter adapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,54 +81,11 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
         actionBar.setHomeAsUpIndicator(R.drawable.btn_menu);
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.layout_drawer);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                menuItem.setChecked(true);
-                mDrawerLayout.closeDrawers();
-
-                int id = menuItem.getItemId();
-                switch (id) {
-                    case R.id.item_life:
-                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        break;
-
-                    case R.id.item_animal:
-                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        break;
-
-                    case R.id.item_vacation:
-                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        break;
-
-                    case R.id.item_person:
-                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        break;
-
-                    case R.id.item_ect:
-                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        break;
-
-                    case R.id.nav_sub_menu_item01:
-                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        break;
-
-                    case R.id.nav_sub_menu_item02:
-                        Toast.makeText(MainActivity.this, menuItem.getTitle(), Toast.LENGTH_LONG).show();
-                        break;
-                }
-
-                return true;
-            }
-        });
-
-        /*imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);*/
 
         lib_list = new ArrayList<LibraryItem>();
         com_items = new ArrayList<Member>();
@@ -159,8 +117,9 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("COMMUNITY"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
-        final PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
+        viewPager = (ViewPager) findViewById(R.id.pager);
+        adapter = new PagerAdapter(getSupportFragmentManager());
+        adapter.setCategory("All");
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -180,51 +139,54 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabUnselected(TabLayout.Tab tab) { }
 
             @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
+            public void onTabReselected(TabLayout.Tab tab) { }
         });
 
-        /*
-       arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, new ArrayList<String>());
-        editSearch.setAdapter(arrayAdapter);
-
-        editSearch.setOnKeyListener(new View.OnKeyListener() {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.navigation_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    assert imm != null;
-                    imm.hideSoftInputFromWindow(editSearch.getWindowToken(), 0);
-                    return true;
+            public boolean onNavigationItemSelected(MenuItem menuItem) {
+                menuItem.setChecked(true);
+                mDrawerLayout.closeDrawers();
+
+                int id = menuItem.getItemId();
+                switch (id) {
+                    case R.id.item_life:
+                        adapter.setCategory("일상");
+                        adapter.notifyDataSetChanged();
+                        break;
+
+                    case R.id.item_animal:
+                        adapter.setCategory("동물");
+                        adapter.notifyDataSetChanged();
+                        break;
+
+                    case R.id.item_vacation:
+                        adapter.setCategory("휴가");
+                        adapter.notifyDataSetChanged();
+                        break;
+
+                    case R.id.item_person:
+                        adapter.setCategory("사람");
+                        adapter.notifyDataSetChanged();
+                        break;
+
+                    case R.id.item_ect:
+                        adapter.setCategory("기타");
+                        adapter.notifyDataSetChanged();
+                        break;
                 }
-                return false;
+
+                return true;
             }
         });
 
-        editSearch.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+       arrayAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, new ArrayList<String>());
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                // input창에 문자를 입력할때마다 호출된다.
-                // search 메소드를 호출한다.
-                String text = editSearch.getText().toString();
-                search(text);
-            }
-
-        });*/
     }
 
     @Override
@@ -232,8 +194,25 @@ public class MainActivity extends AppCompatActivity {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu, menu);
         SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSubmitButtonEnabled(true);
         searchView.setMaxWidth(Integer.MAX_VALUE);
         searchView.setQueryHint("#해시태그 검색");
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override // 검색어 완료시 이벤트 제어
+            public boolean onQueryTextSubmit(String query) {
+                search(query);
+                return false;
+            }
+
+            @Override  //검색어 입력시 이벤트 제어
+            public boolean onQueryTextChange(String newText) {
+                search(newText);
+                return false;
+            }
+        });
+        imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+
         return true;
     }
 
@@ -388,13 +367,158 @@ public class MainActivity extends AppCompatActivity {
         return false; //일치하는 것을 찾지 못했으면 false를 리턴한다.
     }
 
-//    public void uploadSound() {
-//        item = new LibraryItem();
-//        item.title = "티비 소리";
-//        item.content = "#티비 #일상";
-//        item.length = "0:17";
-//        item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%ED%8B%B0%EB%B9%84.mp3?alt=media&token=002cb408-03f5-47f7-ac7b-75e0334e5699";
-//
-//        soundRef.push().setValue(item);
-//    }
+   public void uploadSound() {
+        item = new LibraryItem();
+        item.title = "냉동실 얼음 소리";
+        item.content = "#냉동실 #얼음";
+        item.length = "0:10";
+        item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%83%89%EB%8F%99%EC%8B%A4%20%EC%96%BC%EC%9D%8C.m4a?alt=media&token=212c3663-a094-4b11-836a-d2993481eb3b";
+        item.category = "일상";
+        soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "드라이기 소리(강)";
+       item.content = "#드라이기 #강한 소리";
+       item.length = "0:17";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%93%9C%EB%9D%BC%EC%9D%B4%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EA%B0%95).m4a?alt=media&token=2cc5b7df-b6ca-418d-a965-4606051ad37d";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "드라이기 소리(강약)";
+       item.content = "#드라이기";
+       item.length = "0:19";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%93%9C%EB%9D%BC%EC%9D%B4%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EA%B0%95%EC%95%BD).m4a?alt=media&token=1d23189f-89c8-4b0e-8062-cbe9a96c7c06";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "드라이기 소리(약)";
+       item.content = "#드라이기 #약한 소리";
+       item.length = "0:17";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%93%9C%EB%9D%BC%EC%9D%B4%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EC%95%BD).m4a?alt=media&token=d6cdf31a-53bb-40ce-a3bb-62649be6e459";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "문 닫는 소리";
+       item.content = "#문 닫힘 #쾅";
+       item.length = "0:05";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%AC%B8%20%EB%8B%AB%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=c5b42dc8-38b3-47c4-a27a-b57b503f2753";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "문 여는 소리";
+       item.content = "#문 열림 #끼익";
+       item.length = "0:02";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%AC%B8%20%EC%97%AC%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=e149f1b8-1da6-4e25-b0e0-e96597c730e2";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "변기 내리는 소리";
+       item.content = "#화장실 #변기";
+       item.length = "0:11";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%B3%80%EA%B8%B0%20%EB%82%B4%EB%A6%AC%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=b31a8d67-2e42-4d2f-ba91-82995cf304e1";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "샤워소리(가까이)";
+       item.content = "#샤워 #물 소리";
+       item.length = "0:20";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%83%A4%EC%9B%8C%EC%86%8C%EB%A6%AC(%EA%B0%80%EA%B9%8C%EC%9D%B4).m4a?alt=media&token=c364441c-68be-4af6-94f4-1c68983ccb54";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "샤워소리(멀리서)";
+       item.content = "#샤워 #물 소리";
+       item.length = "0:10";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%83%A4%EC%9B%8C%EC%86%8C%EB%A6%AC(%EB%A9%80%EB%A6%AC%EC%84%9C).m4a?alt=media&token=5bf710c4-54c3-4d61-991b-2020fe55fd4d";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "샤워실 걸음 소리";
+       item.content = "#샤워 #물 소리 # 걸음소리";
+       item.length = "0:06";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%83%A4%EC%9B%8C%EC%8B%A4%20%EA%B1%B8%EC%9D%8C%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=dc13b0e5-37a4-4e6c-ac5a-848c153832f7";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "창고 문 닫는 소리";
+       item.content = "#문 닫음 # 끼이익";
+       item.length = "0:04";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B0%BD%EA%B3%A0%EB%AC%B8%20%EB%8B%AB%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=4e35137f-e4d8-443a-b4eb-14bd0e154946";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "청소기 선 감는 소리(길게)";
+       item.content = "#청소기 소리 #돌돌돌";
+       item.length = "0:14";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%84%A0%20%EA%B0%90%EB%8A%94%20%EC%86%8C%EB%A6%AC(%EA%B8%B8%EA%B2%8C).m4a?alt=media&token=54e333ce-e66e-4ba7-9c85-293031587097";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "청소기 선 뽑는 소리(짧게)";
+       item.content = "#청소기 소리";
+       item.length = "0:09";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%84%A0%20%EB%BD%91%EB%8A%94%20%EC%86%8C%EB%A6%AC(%EC%A7%A7%EA%B2%8C).m4a?alt=media&token=bb721a16-937c-434a-8f83-2250a2d6696f";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "청소기 선 뽑는 소리";
+       item.content = "#청소기 소리";
+       item.length = "0:06";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%84%A0%20%EB%BD%91%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=700faba1-a7eb-482e-942b-feabc27307a9";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "청소기 소리(약)";
+       item.content = "#청소기 소리 #약한 소리";
+       item.length = "0:19";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EC%95%BD).m4a?alt=media&token=d690e609-1b43-450c-9d3f-50da83e6e6ad";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "청소기 소리(강)";
+       item.content = "#청소기 소리 #강한 소리";
+       item.length = "0:25";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EA%B0%95).m4a?alt=media&token=8eb52360-65f4-4674-9a37-22f034454a6f";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "콘센트 뽑는 소리";
+       item.content = "#콘센트";
+       item.length = "0:04";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%BD%98%EC%84%BC%ED%8A%B8%20%EB%BD%91%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=7d156403-da6a-4a5e-9018-f63d6fa580ce";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "하수구 물 내려가는 소리";
+       item.content = "#물 소리 #또옹또옹";
+       item.length = "0:07";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%ED%95%98%EC%88%98%EA%B5%AC%20%EB%AC%BC%20%EB%82%B4%EB%A0%A4%EA%B0%80%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=9b99e2f2-8de8-48f7-a385-3f01978abc02";
+       item.category = "기타";
+       soundRef.push().setValue(item);
+
+       item = new LibraryItem();
+       item.title = "화장실 소리";
+       item.content = "#물 소리 #걸음 소리 #슬리퍼 소리";
+       item.length = "0:18";
+       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%ED%99%94%EC%9E%A5%EC%8B%A4%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=13907f47-d85f-4036-b102-698f2633977f";
+       item.category = "일상";
+       soundRef.push().setValue(item);
+
+   }
 }

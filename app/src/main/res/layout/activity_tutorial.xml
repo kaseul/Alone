@@ -10,27 +10,30 @@
 
     <Button
         android:id="@+id/btn_cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_alignParentEnd="true"
-        android:text="취소"
+        android:layout_margin="20dp"
+        android:background="@drawable/btn_close"
         />
 
     <Button
         android:id="@+id/btn_previous"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_centerVertical="true"
-        android:text="이전"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/btn_back"
         />
 
     <Button
         android:id="@+id/btn_next"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:layout_centerVertical="true"
         android:layout_alignParentEnd="true"
-        android:text="다음"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/btn_next"
         />
 
     <ViewFlipper
@@ -41,6 +44,10 @@
         <include layout="@layout/viewflipper_item1" />
 
         <include layout="@layout/viewflipper_item2" />
+
+        <include layout="@layout/viewflipper_item3" />
+
+        <include layout="@layout/viewflipper_item4" />
 
     </ViewFlipper>
 

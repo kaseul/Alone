@@ -5,6 +5,7 @@ public class LibraryItem {
     public String content;
     public String length;
     public String url;
+    public String category;
     public boolean ifFav = false;
     public boolean isPlay = false;
 

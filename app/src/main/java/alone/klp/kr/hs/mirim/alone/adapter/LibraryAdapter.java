@@ -9,6 +9,7 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +25,8 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import alone.klp.kr.hs.mirim.alone.Fragment.LibraryFragment;
 import alone.klp.kr.hs.mirim.alone.MainActivity;
 import alone.klp.kr.hs.mirim.alone.R;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
@@ -46,7 +50,9 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     private Context context;
     List<LibraryItem> list;
-
+    final FirebaseDatabase database = FirebaseDatabase.getInstance();
+    final DatabaseReference soundRef = database.getReference().child("library");
+    String key;
     MediaPlayer music;
     int pos = -1;
 
@@ -54,6 +60,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         this.list = list;
         this.context = context;
     }
+
 
     @NonNull
     @Override
@@ -64,7 +71,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         RelativeLayout.LayoutParams params;
-
+        
         if(!var.isAll && !list.get(position).ifFav) {
             holder.layout.setVisibility(View.GONE);
             params = (RelativeLayout.LayoutParams) holder.layout.getLayoutParams();
@@ -144,9 +151,11 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
-//                                    Log.d("즐겨찾기 추가 성공", "DocumentSnapshot successfully written!");
-                                    list.get(position).ifFav = true;
-                                    holder.btnFav.setBackground(context.getResources().getDrawable(R.drawable.favorite));
+
+                                        Log.d("즐겨찾기 추가 성공", "DocumentSnapshot successfully written!");
+                                        list.get(position).ifFav = true;
+                                        holder.btnFav.setBackground(context.getResources().getDrawable(R.drawable.favorite));
+                                        notifyDataSetChanged();
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -155,8 +164,8 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                                         Log.w("즐겨찾기 추가 실패", "Error writing document", e);
                                     }
                                 });
-                        notifyDataSetChanged();
                     }
+
                 }
             });
 
@@ -273,7 +282,6 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
 
     public void setLibraryAdapter(List<LibraryItem> arr) {
         this.list = arr;
-
         notifyDataSetChanged();
     }
 
