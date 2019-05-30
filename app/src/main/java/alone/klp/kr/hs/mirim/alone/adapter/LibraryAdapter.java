@@ -268,7 +268,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     music.release();
                     music = null;
                     if(var.isSpeakConnect) {
-                        NetworkAsync network = new NetworkAsync(context, "http://10.96.123.164/pause");
+                        NetworkAsync network = new NetworkAsync(context, "http://10.96.123.164/stop");
                         network.execute(100);
                     }
 

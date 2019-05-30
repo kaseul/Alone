@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -29,7 +30,7 @@ public class NetworkAsync extends AsyncTask<Integer, String, Integer> {
         Log.i(TAG,"onPreExecute()");
         dialog = new ProgressDialog(mContext);
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setTitle("Dialog");
+        dialog.setTitle("스피커 네트워크");
         dialog.setMessage("loading...");
         dialog.show();
     }
@@ -69,11 +70,13 @@ public class NetworkAsync extends AsyncTask<Integer, String, Integer> {
             }
             else {
                 Log.i(TAG, "network failed");
+                Toast.makeText(mContext, "네트워크 연결에 실패햐였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show();
             }
 
         }catch(Exception e){
             e.printStackTrace();
             Log.i(TAG, "network error");
+            Toast.makeText(mContext, "네트워크 연결에 오류가 발생햐였습니다", Toast.LENGTH_SHORT).show();
         }finally {
             try{
                 if(br!= null) br.close();
