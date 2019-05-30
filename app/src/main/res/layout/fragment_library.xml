@@ -8,6 +8,22 @@
     android:id="@+id/layout_library"
     >
 
+    <TextView
+        android:id="@+id/text_speaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="스피커 전원"
+        android:layout_marginStart="15dp"
+        />
+
+    <Switch
+        android:id="@+id/switch_speaker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="15dp"
+        />
+
     <Button
         android:id="@+id/btn_lib_all"
         android:layout_width="34dp"
@@ -17,6 +33,7 @@
         android:background="@drawable/btn_underline"
         android:layout_marginStart="20dp"
         style="?android:attr/borderlessButtonStyle"
+        android:layout_below="@id/text_speaker"
         />
 
     <Button
@@ -29,6 +46,7 @@
         android:layout_marginStart="20dp"
         android:layout_toEndOf="@id/btn_lib_all"
         style="?android:attr/borderlessButtonStyle"
+        android:layout_below="@id/text_speaker"
         />
 
     <android.support.v7.widget.RecyclerView

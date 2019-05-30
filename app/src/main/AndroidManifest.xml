@@ -3,6 +3,10 @@
     package="alone.klp.kr.hs.mirim.alone">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+<<<<<<< HEAD
+=======
+    <uses-permission android:name="android.permission.INTERNET" />
+>>>>>>> network_speaker
 
     <application
         android:allowBackup="true"
