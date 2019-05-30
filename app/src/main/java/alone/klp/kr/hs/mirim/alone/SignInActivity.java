@@ -50,7 +50,8 @@ public class SignInActivity extends AppCompatActivity implements GoogleApiClient
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
 
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        //findViewById(R.id.sign_in_button).setOnClickListener(this);
+        findViewById(R.id.btn_login).setOnClickListener(this);
         permissionCheck();
 
         // FirebaseAuth 초기화
