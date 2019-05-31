@@ -74,6 +74,7 @@ public class LibraryFragment extends Fragment {
         if(!this.category.equals("All")) {
             FragmentTransaction ft = getFragmentManager().beginTransaction();
             ft.detach(this).attach(this).commit();
+            adapter.musicReset();
         }
     }
 

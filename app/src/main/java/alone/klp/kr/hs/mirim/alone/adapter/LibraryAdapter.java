@@ -70,6 +70,14 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.library_item, parent, false));
     }
 
+    public void musicReset() {
+        if(music!=null) {
+            music.stop();
+            music.release();
+            music = null;
+        }
+    }
+
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
         RelativeLayout.LayoutParams params;
