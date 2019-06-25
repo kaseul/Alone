@@ -1,9 +1,11 @@
 package alone.klp.kr.hs.mirim.alone.task;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.view.Gravity;
 import android.widget.Toast;
 
 import java.io.BufferedReader;
@@ -18,7 +20,7 @@ public class NetworkAsync extends AsyncTask<Integer, String, Integer> {
 
     Context mContext = null;
     String mAddr;
-    ProgressDialog dialog = null;
+    public ProgressDialog dialog = null;
 
     public NetworkAsync(Context c, String a){
         mContext = c;
@@ -70,13 +72,24 @@ public class NetworkAsync extends AsyncTask<Integer, String, Integer> {
             }
             else {
                 Log.i(TAG, "network failed");
-                Toast.makeText(mContext, "네트워크 연결에 실패햐였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+                ((Activity) mContext).runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(mContext, "네트워크 연결에 실패하였습니다. 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
 
         }catch(Exception e){
             e.printStackTrace();
             Log.i(TAG, "network error");
-            Toast.makeText(mContext, "네트워크 연결에 오류가 발생햐였습니다", Toast.LENGTH_SHORT).show();
+            ((Activity) mContext).runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast.makeText(mContext, "네트워크 연결에 오류가 발생하였습니다", Toast.LENGTH_SHORT).show();
+                }
+            });
+
         }finally {
             try{
                 if(br!= null) br.close();
