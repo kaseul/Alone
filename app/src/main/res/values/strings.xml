@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">나 혼자 살까</string>
+    <string name="nav_menu_0">전체</string>
     <string name="nav_menu_1">일상</string>
     <string name="nav_menu_2">동물</string>
     <string name="nav_menu_3">휴가</string>

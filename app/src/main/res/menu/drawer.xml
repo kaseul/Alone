@@ -3,8 +3,11 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/item_life"
+            android:id="@+id/item_all"
             android:checked="true"
+            android:title="@string/nav_menu_0" />
+        <item
+            android:id="@+id/item_life"
             android:title="@string/nav_menu_1" />
         <item
             android:id="@+id/item_animal"

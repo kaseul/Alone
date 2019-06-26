@@ -154,6 +154,11 @@ public class MainActivity extends AppCompatActivity {
 
                 int id = menuItem.getItemId();
                 switch (id) {
+                    case R.id.item_all:
+                        adapter.setCategory("all");
+                        adapter.notifyDataSetChanged();
+                        break;
+
                     case R.id.item_life:
                         adapter.setCategory("일상");
                         adapter.notifyDataSetChanged();
@@ -367,7 +372,7 @@ public class MainActivity extends AppCompatActivity {
         return false; //일치하는 것을 찾지 못했으면 false를 리턴한다.
     }
 
-   public void uploadSound() {
+   /*public void uploadSound() {
         item = new LibraryItem();
         item.title = "냉동실 얼음 소리";
         item.content = "#냉동실 #얼음";
@@ -375,150 +380,5 @@ public class MainActivity extends AppCompatActivity {
         item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%83%89%EB%8F%99%EC%8B%A4%20%EC%96%BC%EC%9D%8C.m4a?alt=media&token=212c3663-a094-4b11-836a-d2993481eb3b";
         item.category = "일상";
         soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "드라이기 소리(강)";
-       item.content = "#드라이기 #강한 소리";
-       item.length = "0:17";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%93%9C%EB%9D%BC%EC%9D%B4%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EA%B0%95).m4a?alt=media&token=2cc5b7df-b6ca-418d-a965-4606051ad37d";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "드라이기 소리(강약)";
-       item.content = "#드라이기";
-       item.length = "0:19";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%93%9C%EB%9D%BC%EC%9D%B4%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EA%B0%95%EC%95%BD).m4a?alt=media&token=1d23189f-89c8-4b0e-8062-cbe9a96c7c06";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "드라이기 소리(약)";
-       item.content = "#드라이기 #약한 소리";
-       item.length = "0:17";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%93%9C%EB%9D%BC%EC%9D%B4%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EC%95%BD).m4a?alt=media&token=d6cdf31a-53bb-40ce-a3bb-62649be6e459";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "문 닫는 소리";
-       item.content = "#문 닫힘 #쾅";
-       item.length = "0:05";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%AC%B8%20%EB%8B%AB%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=c5b42dc8-38b3-47c4-a27a-b57b503f2753";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "문 여는 소리";
-       item.content = "#문 열림 #끼익";
-       item.length = "0:02";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%AC%B8%20%EC%97%AC%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=e149f1b8-1da6-4e25-b0e0-e96597c730e2";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "변기 내리는 소리";
-       item.content = "#화장실 #변기";
-       item.length = "0:11";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EB%B3%80%EA%B8%B0%20%EB%82%B4%EB%A6%AC%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=b31a8d67-2e42-4d2f-ba91-82995cf304e1";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "샤워소리(가까이)";
-       item.content = "#샤워 #물 소리";
-       item.length = "0:20";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%83%A4%EC%9B%8C%EC%86%8C%EB%A6%AC(%EA%B0%80%EA%B9%8C%EC%9D%B4).m4a?alt=media&token=c364441c-68be-4af6-94f4-1c68983ccb54";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "샤워소리(멀리서)";
-       item.content = "#샤워 #물 소리";
-       item.length = "0:10";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%83%A4%EC%9B%8C%EC%86%8C%EB%A6%AC(%EB%A9%80%EB%A6%AC%EC%84%9C).m4a?alt=media&token=5bf710c4-54c3-4d61-991b-2020fe55fd4d";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "샤워실 걸음 소리";
-       item.content = "#샤워 #물 소리 # 걸음소리";
-       item.length = "0:06";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%83%A4%EC%9B%8C%EC%8B%A4%20%EA%B1%B8%EC%9D%8C%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=dc13b0e5-37a4-4e6c-ac5a-848c153832f7";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "창고 문 닫는 소리";
-       item.content = "#문 닫음 # 끼이익";
-       item.length = "0:04";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B0%BD%EA%B3%A0%EB%AC%B8%20%EB%8B%AB%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=4e35137f-e4d8-443a-b4eb-14bd0e154946";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "청소기 선 감는 소리(길게)";
-       item.content = "#청소기 소리 #돌돌돌";
-       item.length = "0:14";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%84%A0%20%EA%B0%90%EB%8A%94%20%EC%86%8C%EB%A6%AC(%EA%B8%B8%EA%B2%8C).m4a?alt=media&token=54e333ce-e66e-4ba7-9c85-293031587097";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "청소기 선 뽑는 소리(짧게)";
-       item.content = "#청소기 소리";
-       item.length = "0:09";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%84%A0%20%EB%BD%91%EB%8A%94%20%EC%86%8C%EB%A6%AC(%EC%A7%A7%EA%B2%8C).m4a?alt=media&token=bb721a16-937c-434a-8f83-2250a2d6696f";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "청소기 선 뽑는 소리";
-       item.content = "#청소기 소리";
-       item.length = "0:06";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%84%A0%20%EB%BD%91%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=700faba1-a7eb-482e-942b-feabc27307a9";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "청소기 소리(약)";
-       item.content = "#청소기 소리 #약한 소리";
-       item.length = "0:19";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EC%95%BD).m4a?alt=media&token=d690e609-1b43-450c-9d3f-50da83e6e6ad";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "청소기 소리(강)";
-       item.content = "#청소기 소리 #강한 소리";
-       item.length = "0:25";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%B2%AD%EC%86%8C%EA%B8%B0%20%EC%86%8C%EB%A6%AC(%EA%B0%95).m4a?alt=media&token=8eb52360-65f4-4674-9a37-22f034454a6f";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "콘센트 뽑는 소리";
-       item.content = "#콘센트";
-       item.length = "0:04";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%EC%BD%98%EC%84%BC%ED%8A%B8%20%EB%BD%91%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=7d156403-da6a-4a5e-9018-f63d6fa580ce";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "하수구 물 내려가는 소리";
-       item.content = "#물 소리 #또옹또옹";
-       item.length = "0:07";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%ED%95%98%EC%88%98%EA%B5%AC%20%EB%AC%BC%20%EB%82%B4%EB%A0%A4%EA%B0%80%EB%8A%94%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=9b99e2f2-8de8-48f7-a385-3f01978abc02";
-       item.category = "기타";
-       soundRef.push().setValue(item);
-
-       item = new LibraryItem();
-       item.title = "화장실 소리";
-       item.content = "#물 소리 #걸음 소리 #슬리퍼 소리";
-       item.length = "0:18";
-       item.url = "https://firebasestorage.googleapis.com/v0/b/alone-5017d.appspot.com/o/record%2F%ED%99%94%EC%9E%A5%EC%8B%A4%20%EC%86%8C%EB%A6%AC.m4a?alt=media&token=13907f47-d85f-4036-b102-698f2633977f";
-       item.category = "일상";
-       soundRef.push().setValue(item);
-
-   }
+   }*/
 }

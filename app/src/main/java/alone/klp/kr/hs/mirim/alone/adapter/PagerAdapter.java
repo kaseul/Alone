@@ -5,14 +5,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.Log;
 
+import java.util.Stack;
+
 import alone.klp.kr.hs.mirim.alone.Fragment.CommunityFragment;
 import alone.klp.kr.hs.mirim.alone.Fragment.LibraryFragment;
 
 public class PagerAdapter extends FragmentStatePagerAdapter {
     int mNumOfTabs = 2;
     String category;
-    LibraryFragment tab1 = new LibraryFragment();
-    CommunityFragment tab2 = new CommunityFragment();
+    LibraryFragment library = new LibraryFragment();
+    CommunityFragment community = new CommunityFragment();
 
     public PagerAdapter(FragmentManager fm) {
         super(fm);
@@ -22,10 +24,10 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                tab1.setCategory(category);
-                return tab1;
+                library.setCategory(category);
+                return library;
             case 1:
-               return tab2;
+               return community;
             default:
                 return null;
         }
@@ -38,7 +40,6 @@ public class PagerAdapter extends FragmentStatePagerAdapter {
 
     public void setCategory(String category) {
         this.category = category;
-        tab1.setCategory(category);
-        Log.i("categorySetting",category);
+        library.setCategory(category);
     }
 }

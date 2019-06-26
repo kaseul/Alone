@@ -32,17 +32,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import alone.klp.kr.hs.mirim.alone.MainActivity;
 import alone.klp.kr.hs.mirim.alone.R;
-import alone.klp.kr.hs.mirim.alone.SpeakerActivity;
 import alone.klp.kr.hs.mirim.alone.adapter.LibraryAdapter;
 import alone.klp.kr.hs.mirim.alone.model.LibraryItem;
 import alone.klp.kr.hs.mirim.alone.task.NetworkAsync;
 
-/*import static alone.klp.kr.hs.mirim.alone.MainActivity.editSearch;*/
-import static alone.klp.kr.hs.mirim.alone.MainActivity.imm;
 import static alone.klp.kr.hs.mirim.alone.SignInActivity.var;
 
 
@@ -65,7 +61,6 @@ public class LibraryFragment extends Fragment {
     final FirebaseDatabase database = FirebaseDatabase.getInstance();
     final DatabaseReference soundRef = database.getReference().child("library");
 
-    private RelativeLayout layout;
 
     public LibraryFragment() {
         var.isLibrary = true;
@@ -102,11 +97,7 @@ public class LibraryFragment extends Fragment {
         ((MainActivity) getActivity()).lib_search = searchList;
         ((MainActivity) getActivity()).libraryAdapter = adapter;
         ((MainActivity) getActivity()).library_recycler = libraryListRecyclerView;
-//        list = (ArrayList<LibraryItem>) getActivity().getIntent().getSerializableExtra("library_list");
-//        searchList = (ArrayList<LibraryItem>) getActivity().getIntent().getSerializableExtra("library_search");
 
-        layout = view.findViewById(R.id.layout_library);
-        /*layout.setOnClickListener(mClickListener);*/
 
         ValueEventListener postListener = new ValueEventListener() {
             @Override
@@ -118,7 +109,8 @@ public class LibraryFragment extends Fragment {
                     item = soundsData.getValue(LibraryItem.class);
                     Log.i("categoryCheck",item.category);
                     Log.i("categoryThis",category);
-                    if(category.equals("All")) {
+
+                    if(category.equalsIgnoreCase("All")) {
                         list.add(item);
                         searchList.add(item);
                         hashtags.add(item.content.substring(0, item.content.indexOf('#', 1) - 1));
@@ -252,6 +244,8 @@ public class LibraryFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        network.dialog.dismiss();
+        if(network != null && network.dialog != null) {
+            network.dialog.dismiss();
+        }
     }
 }
