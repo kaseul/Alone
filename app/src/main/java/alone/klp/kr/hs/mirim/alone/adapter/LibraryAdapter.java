@@ -94,6 +94,28 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             params.topMargin = MainActivity.dpToPx(context, 7);
             holder.layout.setLayoutParams(params);
 
+            holder.btnDown.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                    alert.setNegativeButton("취소", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alert.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            download(list.get(position).title, list.get(position).url);
+                        }
+                    });
+                    alert.setMessage(list.get(position).title + "를 다운받으시겠습니까?");
+                    alert.show();
+                }
+            });
+
+            /*
             holder.view.setOnLongClickListener(new View.OnLongClickListener() {
                 @Override
                 public boolean onLongClick(View v) {
@@ -115,7 +137,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     return true;
                 }
             });
-
+            */
             holder.title.setText(list.get(position).title);
             //holder.content.setText(list.get(position).content);
             holder.hashtag1.setText(list.get(position).content.substring(0, list.get(position).content.indexOf("#", 1)-1));
@@ -357,6 +379,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
         public SeekBar seekBar;
         public Button btnFav;
         public Button btnPlay;
+        public Button btnDown;
         public View view;
 
         public ViewHolder(View v) {
@@ -378,6 +401,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
             });
             btnFav = v.findViewById(R.id.btn_favorite);
             btnPlay = v.findViewById(R.id.btn_play);
+            btnDown = v.findViewById(R.id.btn_download);
         }
     }
 }

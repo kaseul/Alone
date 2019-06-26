@@ -155,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 int id = menuItem.getItemId();
                 switch (id) {
                     case R.id.item_all:
-                        adapter.setCategory("all");
+                        adapter.setCategory("전체");
                         adapter.notifyDataSetChanged();
                         break;
 

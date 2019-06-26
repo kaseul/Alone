@@ -30,6 +30,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -67,6 +68,8 @@ public class CommunityFragment extends Fragment implements GoogleApiClient.OnCon
     private ArrayList<String> keys;
     public CommunityAdapter communityAdapter;
     private ListView listView;
+
+    private SimpleDateFormat format = new SimpleDateFormat("YYYY년 MM월 dd일");
 
     private RelativeLayout layout;
     private Button btn_add;
@@ -122,7 +125,7 @@ public class CommunityFragment extends Fragment implements GoogleApiClient.OnCon
                 intent.putExtra("mPhotoUrl", mPhotoUrl);
                 intent.putExtra("PostName", items.get(position).getName());
                 intent.putExtra("PostEmail", items.get(position).getEmail());
-                intent.putExtra("PostDate", items.get(position).getDate());
+                intent.putExtra("PostDate", format.format(items.get(position).getDate()));
                 intent.putExtra("PostPhotoUrl",items.get(position).getPhotoUrl());
                 intent.putExtra("PostText", items.get(position).getText());
                 intent.putExtra("PostKey", keys.get(keys.size() - position - 1));

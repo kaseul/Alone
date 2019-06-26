@@ -107,10 +107,10 @@ public class LibraryFragment extends Fragment {
                 hashtags.clear();
                 for(DataSnapshot soundsData : dataSnapshot.getChildren()){
                     item = soundsData.getValue(LibraryItem.class);
-                    Log.i("categoryCheck",item.category);
-                    Log.i("categoryThis",category);
+                    // Log.i("categoryCheck",item.category);
+                    // Log.i("categoryThis",category);
 
-                    if(category.equalsIgnoreCase("All")) {
+                    if(category == null || category.equals("All") || category.equals("전체")) {
                         list.add(item);
                         searchList.add(item);
                         hashtags.add(item.content.substring(0, item.content.indexOf('#', 1) - 1));
