@@ -178,10 +178,10 @@ public class LibraryFragment extends Fragment {
                     Toast.makeText(getContext(), "스피커를 껐습니다.", Toast.LENGTH_SHORT).show();
                     var.isSpeakConnect = false;
 
-                    // audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_PLAY_SOUND);
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, AudioManager.FLAG_PLAY_SOUND);
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), AudioManager.FLAG_PLAY_SOUND);
+                    // audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, 0, AudioManager.FLAG_PLAY_SOUND);
 
-                    network = new NetworkAsync(getActivity(), "http://10.96.123.164/stop");
+                    network = new NetworkAsync(getActivity(), "http://10.95.70.201/stop");
                     network.execute(100);
                 }
             }

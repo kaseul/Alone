@@ -236,7 +236,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     music.release();
                     music = null;
                     if(var.isSpeakConnect) {
-                        NetworkAsync network = new NetworkAsync(context, "http://10.96.123.164/stop");
+                        NetworkAsync network = new NetworkAsync(context, "http://10.95.70.201/stop");
                         network.execute(100);
                     }
 
@@ -267,7 +267,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                         pos = position;
                         list.get(position).isPlay = true;
                         if(var.isSpeakConnect) {
-                            NetworkAsync network = new NetworkAsync(context, "http://10.96.123.164/" + (position + 1));
+                            NetworkAsync network = new NetworkAsync(context, "http://10.95.70.201/" + (position + 1));
                             network.execute(100);
                         }
 
@@ -307,7 +307,7 @@ public class LibraryAdapter extends RecyclerView.Adapter<LibraryAdapter.ViewHold
                     music.release();
                     music = null;
                     if(var.isSpeakConnect) {
-                        NetworkAsync network = new NetworkAsync(context, "http://10.96.123.164/stop");
+                        NetworkAsync network = new NetworkAsync(context, "http://10.95.70.201/stop");
                         network.execute(100);
                     }
 
