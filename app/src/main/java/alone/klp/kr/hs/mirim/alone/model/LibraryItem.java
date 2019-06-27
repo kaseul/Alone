@@ -8,6 +8,7 @@ public class LibraryItem {
     public String category;
     public boolean ifFav = false;
     public boolean isPlay = false;
+    public int index = -1;
 
     @Override
     public boolean equals(Object obj) {

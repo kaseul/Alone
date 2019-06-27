@@ -102,11 +102,13 @@ public class LibraryFragment extends Fragment {
         ValueEventListener postListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                int index = 1;
                 list.clear();
                 searchList.clear();
                 hashtags.clear();
                 for(DataSnapshot soundsData : dataSnapshot.getChildren()){
                     item = soundsData.getValue(LibraryItem.class);
+                    item.index = index;
                     // Log.i("categoryCheck",item.category);
                     // Log.i("categoryThis",category);
 
@@ -123,6 +125,7 @@ public class LibraryFragment extends Fragment {
                             hashtags.add(item.content.substring(item.content.indexOf('#', 1)));
                         }
                     }
+                    index++;
                 }
 
                 // 해시태그 중복 제거
